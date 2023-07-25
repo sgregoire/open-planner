@@ -9,8 +9,8 @@ export type EventType = {
   tags: ReadonlyArray<string>;
   color?: number;
   timeframe: Timeframe;
-  exceptions: ReadonlyArray<Timeframe>
-  occurences: ReadonlyArray<Occurence>
+  exceptions: ReadonlyArray<Timeframe>;
+  occurences: ReadonlyArray<Occurence>;
 }
 
 export type Timeframe = {
