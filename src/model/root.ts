@@ -1,16 +1,16 @@
 
-export type Root {
-  eventTypes: readonlyarray<EventType>;
+export type Root = {
+  eventTypes: ReadonlyArray<EventType>;
 }
 
-export type EventType {
+export type EventType = {
   name: string;
   color?: number;
   timeframe: Timeframe;
-  exceptions: readonlyarray<Timeframe>;
+  exceptions: ReadonlyArray<Timeframe>;
 }
 
-export type Timeframe {
+export type Timeframe = {
   from: date;
   to: date;
 }
