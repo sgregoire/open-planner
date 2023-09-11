@@ -77,6 +77,28 @@ export const root: Root = {
             ],
             occurences: [
                 {
+                    day: "Mo",
+                    from: {
+                        hour: 8,
+                        minute: 30, 
+                    },
+                    to: {
+                        hour: 11,
+                        minute: 30, 
+                    },
+                },
+                {
+                    day: "Mo",
+                    from: {
+                        hour: 11,
+                        minute: 30, 
+                    },
+                    to: {
+                        hour: 12,
+                        minute: 30, 
+                    },
+                },
+                {
                     day: "Tu",
                     from: {
                         hour: 10,

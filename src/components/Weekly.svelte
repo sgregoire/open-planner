@@ -1,8 +1,9 @@
 <script lang="ts">
-	import type { Day, Hour, Time } from "../model";
+	import type { Day, Hour, Occurence, Time } from "../model";
     import { root } from "../model/my-events";
 	import { generateColors } from "../color-generator";
 	import { onMount } from "svelte";
+	import moment from "moment";
 
     const colors = generateColors(root.eventTypes.filter(it => it.color === undefined).length);
     let cnt = 0;
@@ -50,6 +51,34 @@
         return (to.hour - from.hour) * 60 - from.minute + to.minute;
     }
 
+    function dayToMomentIndex(d: Day) {
+        switch (d) {
+            case "Mo": return 1;
+            case "Tu": return 2;
+            case "We": return 3;
+            case "Th": return 4;
+            case "Fr": return 5;
+            case "Sa": return 6;
+            case "Su": return 0;
+        };
+    }
+    function isOverlapping(a: Occurence, b: Occurence) {
+        const aDate = moment().day(dayToMomentIndex(a.day));
+        const aFrom = new Date(aDate.toDate().setHours(a.from.hour, a.from.minute, 0, 0));
+        const aTo = new Date(aDate.toDate().setHours(a.to.hour, a.to.minute, 0, 0));
+        
+        const bDate = moment().day(dayToMomentIndex(b.day));
+        const bFrom = new Date(bDate.toDate().setHours(b.from.hour, b.from.minute, 0, 0));
+        const bTo = new Date(bDate.toDate().setHours(b.to.hour, b.to.minute, 0, 0));
+
+        // If an event ends before the other starts
+        if(aTo <= bFrom || bTo <= aFrom) {
+            return false;
+        }
+
+        return true;
+    }
+
     function paint() {
         console.log(container.childNodes);
         container.childNodes.forEach(it => it.remove());
@@ -94,16 +123,25 @@
 
         root.eventTypes.forEach((eventType) => {
             eventType.occurences.forEach((occurence) => {
+                const overlappingOccurences = root.eventTypes
+                    .flatMap(it => it.occurences)
+                    .filter(it => isOverlapping(occurence, it))
+    
                 const child = document.createElement('div');
                 child.textContent = `${eventType.name} - ${occurence.from.hour}:${occurence.from.minute} - ${occurence.to.hour}:${occurence.to.minute}`;
                 child.classList.add("absolute", "text-center", "pr-2", "border")
-                child.style.setProperty("width", `${dayWidth}px`);
+
+                const occurenceWidth = dayWidth / overlappingOccurences.length;
+                child.style.setProperty("width", `${occurenceWidth}px`);
                 
                 const duration = computeDuration(occurence.from, occurence.to)
                 child.style.setProperty("height", `${minuteHeight * duration}px`);
                 const durationFromBeginning = computeDuration({ hour: fromHour, minute: 0 }, occurence.from);
                 child.style.setProperty("top", `${hourHeight + durationFromBeginning * minuteHeight}px`)
-                child.style.setProperty("left", `${dayOffset(occurence.day) * dayWidth}px`)
+
+                // TODO @sgregoire: When an event overlaps with 2 other that does not, the size is incorrect
+                const offset = occurenceWidth * overlappingOccurences.findIndex(it => it === occurence);
+                child.style.setProperty("left", `${dayOffset(occurence.day) * dayWidth + offset}px`)
                 child.style.setProperty("background-color", `#${eventType.color?.toString(16)}`)
 
                 container.appendChild(child);
