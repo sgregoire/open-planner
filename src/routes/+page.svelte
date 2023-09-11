@@ -2,6 +2,7 @@
     import { root } from "../model/my-events";
 	import { generateColors } from "../color-generator";
 	import Yearly from "../components/Yearly.svelte";
+	import Weekly from "../components/Weekly.svelte";
 
     const colors = generateColors(root.eventTypes.filter(it => it.color === undefined).length);
     let cnt = 0;
@@ -28,4 +29,5 @@
     {/each}
 </div>
 
-<Yearly />
+<!-- <Yearly /> -->
+<Weekly />

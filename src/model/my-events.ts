@@ -36,9 +36,20 @@ export const root: Root = {
                     },
                 },
                 {
+                    day: "Th",
+                    from: {
+                        hour: 8,
+                        minute: 30, 
+                    },
+                    to: {
+                        hour: 13,
+                        minute: 0, 
+                    },
+                },
+                {
                     day: "Fr",
                     from: {
-                        hour: 10,
+                        hour: 11,
                         minute: 30, 
                     },
                     to: {
