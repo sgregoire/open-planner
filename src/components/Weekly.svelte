@@ -126,12 +126,24 @@
                 const overlappingOccurences = root.eventTypes
                     .flatMap(it => it.occurences)
                     .filter(it => isOverlapping(occurence, it))
-    
+
+                const others = overlappingOccurences.filter(it => it !== occurence)
+
+                const otherEventsInParallelCnt = Math.max(
+                    // 0 for default value
+                    ...[0, ...others.map((other, idx) =>
+                        // Count events in parallel
+                        others.slice(idx + 1)
+                            .reduce((acc, it) => acc + (isOverlapping(other, it) ? 2 : 0), 0)
+                    )]
+                );
+
                 const child = document.createElement('div');
                 child.textContent = `${eventType.name} - ${occurence.from.hour}:${occurence.from.minute} - ${occurence.to.hour}:${occurence.to.minute}`;
                 child.classList.add("absolute", "text-center", "pr-2", "border")
 
-                const occurenceWidth = dayWidth / overlappingOccurences.length;
+                // 1 for current event
+                const occurenceWidth = dayWidth / (otherEventsInParallelCnt + 1);
                 child.style.setProperty("width", `${occurenceWidth}px`);
                 
                 const duration = computeDuration(occurence.from, occurence.to)
