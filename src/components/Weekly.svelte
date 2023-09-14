@@ -37,13 +37,13 @@
 
     function dayOffset(day: Day) {
         switch(day) {
-            case 'Mo': return 1;
-            case 'Tu': return 2;
-            case 'We': return 3;
-            case 'Th': return 4;
-            case 'Fr': return 5;
-            case 'Sa': return 6;
-            case 'Su': return 7;
+            case 'Mo': return 0;
+            case 'Tu': return 1;
+            case 'We': return 2;
+            case 'Th': return 3;
+            case 'Fr': return 4;
+            case 'Sa': return 5;
+            case 'Su': return 6;
         }
     }
 
@@ -80,46 +80,81 @@
     }
 
     function paint() {
-        console.log(container.childNodes);
         container.childNodes.forEach(it => it.remove());
-        const hourHeight = container.clientHeight / (hoursToDisplay + 1) ;
-        const minuteHeight = hourHeight / 60;
-        const dayWidth = container.clientWidth / 8;
+        
+        const dayLabels = [];
+        const dayLines = [];
+        days.forEach((day) => {
+            const dayLabel = document.createElement('div');
+            dayLabel.textContent = day;
+            dayLabel.classList.add("absolute", "bg-blue-600", "text-center", "invisible", "py-2")
+            
+            dayLabel.style.setProperty("top", "0")
 
-        days.forEach((day, index) => {
-            const child = document.createElement('div');
-            child.textContent = day;
-            child.classList.add("absolute", "bg-blue-600", "text-center", "border")
-            child.style.setProperty("width", `${dayWidth}px`);
-            child.style.setProperty("height", `${hourHeight}px`);
-            child.style.setProperty("top", "0")
-            child.style.setProperty("left", `${(index + 1) * dayWidth}px`)
+            
+            const dayLine = document.createElement('div');
+            dayLine.classList.add("absolute", "w-px", "bg-slate-500", "bla")
+            dayLine.style.setProperty("top", "0")
+            dayLine.style.setProperty("bottom", "0")
+            
+            container.appendChild(dayLabel);
+            container.appendChild(dayLine);
+            
+            dayLines.push(dayLine);
+            dayLabels.push(dayLabel)
 
-            container.appendChild(child);
         });
 
-        for(let i = 1; i <= hoursToDisplay; i++) {
-            const child = document.createElement('div');
-            child.textContent = `${fromHour + i - 1}h`;
-            child.classList.add("absolute", "bg-green-600", "text-left", "pr-2", "border")
-            child.style.setProperty("width", `${dayWidth}px`);
-            child.style.setProperty("height", `${hourHeight}px`);
-            child.style.setProperty("top", `${i * hourHeight}px`);
-            child.style.setProperty("left", "0")
+        const hourLabels = [];
+        const hourLines = [];
+        for(let i = 0; i < hoursToDisplay; i++) {
+            const hourLabel = document.createElement('div');
+            hourLabel.textContent = `${(fromHour + i).toString().padStart(2, "0")}:00`;
+            hourLabel.classList.add("absolute", "text-left", "pr-2", "flex", "content-center", "px-2", "invisible")
+            hourLabel.style.setProperty("left", "0")
+            container.appendChild(hourLabel);
             
-            const quarterHeight = hourHeight / 4;
-            [0, 1, 2, 3].forEach(it => {
-                const start = document.createElement('div');
-                start.textContent = `${it * 15}`;
-                start.classList.add("absolute", "bg-green-600", "text-right", "pr-2", "border")
-                //start.style.setProperty("width", `${dayWidth}px`);
-                start.style.setProperty("top", `${quarterHeight * it}px`)
-                start.style.setProperty("right", "0")
-                child.appendChild(start)
-            })
+            const hourLine = document.createElement('div');
+            hourLine.classList.add("absolute", "bg-green-600", "text-right", "h-px","bg-slate-500", "invisible")
+            hourLine.style.setProperty("right", "0")
+            hourLine.style.setProperty("left", "0")
+            container.appendChild(hourLine)
 
-            container.appendChild(child);
+            hourLabels.push(hourLabel)
+            hourLines.push(hourLine)
         }
+
+        const hourWidth = Math.max(...hourLabels.map(elt => elt.clientWidth))
+
+        const dayWidth = (container.clientWidth - hourWidth) / 7;
+        const dayHeight = Math.max(...dayLabels.map(elt => elt.clientHeight))
+        const hourHeight = (container.clientHeight - dayHeight) / hoursToDisplay;
+        const minuteHeight = hourHeight / 60;
+        
+        hourLines.forEach((elt, idx) => {
+            elt.style.setProperty("top", `${dayHeight + hourHeight * idx}px`)
+            elt.style.setProperty("left", `${hourWidth}px`);
+            elt.classList.remove("invisible");
+        })
+
+        hourLabels.forEach((elt, idx) => {
+            // To center
+            const height = elt.clientHeight
+            elt.style.setProperty("top", `${dayHeight + idx * hourHeight - height / 2}px`)
+            elt.classList.remove("invisible")
+        });
+
+
+        dayLabels.forEach((elt, idx) => {
+            elt.style.setProperty("width", `${dayWidth}px`);
+            elt.style.setProperty("left", `${hourWidth + idx * dayWidth}px`)
+            elt.style.setProperty("height", `${dayHeight}px`);
+            elt.classList.remove("invisible");
+        })
+
+        dayLines.forEach((elt, idx) => {
+            elt.style.setProperty("left", `${hourWidth + idx * dayWidth}px`)
+        })
 
         root.eventTypes.forEach((eventType) => {
             eventType.occurences.forEach((occurence) => {
@@ -149,11 +184,10 @@
                 const duration = computeDuration(occurence.from, occurence.to)
                 child.style.setProperty("height", `${minuteHeight * duration}px`);
                 const durationFromBeginning = computeDuration({ hour: fromHour, minute: 0 }, occurence.from);
-                child.style.setProperty("top", `${hourHeight + durationFromBeginning * minuteHeight}px`)
+                child.style.setProperty("top", `${dayHeight + durationFromBeginning * minuteHeight}px`)
 
-                // TODO @sgregoire: When an event overlaps with 2 other that does not, the size is incorrect
                 const offset = occurenceWidth * overlappingOccurences.findIndex(it => it === occurence);
-                child.style.setProperty("left", `${dayOffset(occurence.day) * dayWidth + offset}px`)
+                child.style.setProperty("left", `${hourWidth + dayOffset(occurence.day) * dayWidth + offset}px`)
                 child.style.setProperty("background-color", `#${eventType.color?.toString(16)}`)
 
                 container.appendChild(child);
