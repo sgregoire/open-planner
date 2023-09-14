@@ -110,14 +110,11 @@
         for(let i = 0; i < hoursToDisplay; i++) {
             const hourLabel = document.createElement('div');
             hourLabel.textContent = `${(fromHour + i).toString().padStart(2, "0")}:00`;
-            hourLabel.classList.add("absolute", "text-left", "pr-2", "flex", "content-center", "px-2", "invisible")
-            hourLabel.style.setProperty("left", "0")
+            hourLabel.classList.add("absolute", "text-left", "pr-2", "flex", "content-center", "px-2", "left-0", "invisible")
             container.appendChild(hourLabel);
             
             const hourLine = document.createElement('div');
-            hourLine.classList.add("absolute", "bg-green-600", "text-right", "h-px","bg-slate-500", "invisible")
-            hourLine.style.setProperty("right", "0")
-            hourLine.style.setProperty("left", "0")
+            hourLine.classList.add("absolute", "bg-green-600", "text-right", "h-px","bg-slate-500", "right-0", "left-0", "invisible")
             container.appendChild(hourLine)
 
             hourLabels.push(hourLabel)
