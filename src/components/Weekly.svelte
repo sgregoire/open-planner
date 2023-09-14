@@ -175,7 +175,7 @@
 
                 const child = document.createElement('div');
                 child.textContent = `${eventType.name} - ${occurence.from.hour}:${occurence.from.minute} - ${occurence.to.hour}:${occurence.to.minute}`;
-                child.classList.add("absolute", "text-center", "pr-2", "border")
+                child.classList.add("absolute", "text-center", "px-1", "bg-clip-content")
 
                 // 1 for current event
                 const occurenceWidth = dayWidth / (otherEventsInParallelCnt + 1);
