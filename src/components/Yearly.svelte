@@ -1,8 +1,6 @@
 <script lang="ts">
     import moment from "moment";
-	import type { Timeframe } from "../model";
     import { root } from "../model/my-events";
-	import { generateColors } from "../color-generator";
 	import { matchingEvents } from "$lib/eventMatcher";
 	import { colorToRgb } from "$lib/colorHelper";
 
@@ -31,15 +29,6 @@
         0: "Di",
     }
 
-    const colors = generateColors(root.eventTypes.filter(it => it.color === undefined).length);
-    let cnt = 0;
-    for(const event of root.eventTypes) {
-        if (event.color === undefined) {
-            event.color = colors[cnt]
-            cnt++;
-        }
-    }
-    
     const duration = moment.duration(moment(root.timeframe.to).endOf('month').diff(moment(root.timeframe.from).startOf('month')));
     const months: moment.Moment[][] = [];
     for(let i = 0; i < duration.months(); i++) {
