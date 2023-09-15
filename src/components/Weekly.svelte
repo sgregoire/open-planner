@@ -154,8 +154,8 @@
                 const others = overlappingOccurences.filter(it => it !== occurence)
 
                 const otherEventsInParallelCnt = Math.max(
-                    // 0 for default value
-                    ...[0, ...others.map((other, idx) =>
+                    // At least other.length as value
+                    ...[others.length, ...others.map((other, idx) =>
                         // Count events in parallel
                         others.slice(idx + 1)
                             .reduce((acc, it) => acc + (isOverlapping(other, it) ? 2 : 0), 0)
