@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { Day, Hour, Occurence, Time } from "../model";
-    import { root } from "../model/my-events";
+    import { weekEventGenerator } from "../model/my-events";
 	import { generateColors } from "../color-generator";
 	import { onMount } from "svelte";
 	import moment from "moment";
@@ -18,7 +18,16 @@
         "Di",
     ];
 
-    
+    const root = weekEventGenerator(50);
+    const colors = generateColors(root.eventTypes.filter(it => it.color === undefined).length);
+    let cnt = 0;
+    for(const event of root.eventTypes) {
+        if (event.color === undefined) {
+            event.color = colors[cnt]
+            cnt++;
+        }
+    }
+
     const occurences = root.eventTypes.flatMap(eventType => eventType.occurences);
     const froms: number[] = occurences.map(it => it.from.hour);
     const tos: number[] = occurences.map(it => it.to.minute > 0 ? it.to.hour + 1 : it.to.hour);
