@@ -74,8 +74,8 @@
     function paint() {
         container.childNodes.forEach(it => it.remove());
         
-        const dayLabels = [];
-        const dayLines = [];
+        const dayLabels: HTMLDivElement[] = [];
+        const dayLines: HTMLDivElement[] = [];
         days.forEach((day) => {
             const dayLabel = document.createElement('div');
             dayLabel.textContent = day;
@@ -97,8 +97,8 @@
 
         });
 
-        const hourLabels = [];
-        const hourLines = [];
+        const hourLabels: HTMLDivElement[] = [];
+        const hourLines: HTMLDivElement[] = [];
         for(let i = 0; i < hoursToDisplay; i++) {
             const hourLabel = document.createElement('div');
             hourLabel.textContent = `${(fromHour + i).toString().padStart(2, "0")}:00`;
@@ -163,7 +163,13 @@
                 );
 
                 const child = document.createElement('div');
-                child.textContent = `${eventType.name} - ${occurence.from.hour}:${occurence.from.minute} - ${occurence.to.hour}:${occurence.to.minute}`;
+                const fromHourText =`${(occurence.from.hour).toString().padStart(2, "0")}`;
+                const toHourText =`${(occurence.to.hour).toString().padStart(2, "0")}`;
+                const fromMinText =`${(occurence.from.minute).toString().padStart(2, "0")}`;
+                const toMinText =`${(occurence.to.minute).toString().padStart(2, "0")}`;
+                const fromText = `${fromHourText}:${fromMinText}`;
+                const toText = `${toHourText}:${toMinText}`
+                child.textContent = `${eventType.name} - ${occurence.day} ${fromText} - ${toText}`;
                 child.classList.add("absolute", "text-center", "px-1", "bg-clip-content")
 
                 // 1 for current event
