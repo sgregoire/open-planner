@@ -5,10 +5,16 @@ export type Root = {
   exceptions: ReadonlyArray<Timeframe>;
 }
 
+export type Color = {
+  red: number;
+  green: number;
+  blue: number;
+}
+
 export type EventType = {
   name: string;
   tags: ReadonlySet<string>;
-  color?: number;
+  color?: Color;
   timeframe: Timeframe;
   exceptions: ReadonlyArray<Timeframe>;
   occurences: ReadonlyArray<Occurence>;

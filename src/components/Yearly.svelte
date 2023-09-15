@@ -4,6 +4,7 @@
     import { root } from "../model/my-events";
 	import { generateColors } from "../color-generator";
 	import { matchingEvents } from "$lib/eventMatcher";
+	import { colorToRgb } from "$lib/colorHelper";
 
     const monthNames = [
         "Janvier",
@@ -69,7 +70,7 @@
                     <div class="flex flex-1">
                         {#if matchingEvents(day, root).length > 0}
                             {#each matchingEvents(day, root) as event}
-                                <div class="h-full w-full px-2" style="background-color: #{ event.color?.toString(16) }">
+                                <div class="h-full w-full px-2" style="background-color: { colorToRgb(event.color) }">
                                     {event.name}
                                 </div>
                             {/each}

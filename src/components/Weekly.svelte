@@ -4,15 +4,7 @@
 	import { generateColors } from "../color-generator";
 	import { onMount } from "svelte";
 	import moment from "moment";
-
-    const colors = generateColors(root.eventTypes.filter(it => it.color === undefined).length);
-    let cnt = 0;
-    for(const event of root.eventTypes) {
-        if (event.color === undefined) {
-            event.color = colors[cnt]
-            cnt++;
-        }
-    }
+	import { colorToRgb } from "$lib/colorHelper";
 
     let container: HTMLDivElement;
 
@@ -185,7 +177,7 @@
 
                 const offset = occurenceWidth * overlappingOccurences.findIndex(it => it === occurence);
                 child.style.setProperty("left", `${hourWidth + dayOffset(occurence.day) * dayWidth + offset}px`)
-                child.style.setProperty("background-color", `#${eventType.color?.toString(16)}`)
+                child.style.setProperty("background-color", colorToRgb(eventType.color))
 
                 container.appendChild(child);
             })
