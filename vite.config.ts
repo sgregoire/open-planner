@@ -7,9 +7,6 @@ export default defineConfig({
 		deps: {
 			inline: ['moment']
 		},
-		coverage: {
-			provider: 'istanbul'
-		},
 		include: ['tests/**/*.{test,spec}.{js,ts}']
 	}
 });
