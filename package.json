@@ -37,6 +37,7 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"decoders": "^2.0.4",
 		"moment": "^2.29.4"
 	}
 }
