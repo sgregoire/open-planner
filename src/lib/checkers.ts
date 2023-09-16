@@ -1,4 +1,4 @@
-import type { Color, Day, EventType, Occurence, Root, Time, Timeframe } from '../model/root';
+import type { Color, EventType, Occurence, Root, Time, Timeframe } from '../model/root';
 
 export function reduceCheckResults(values: boolean[]): boolean {
 	return values.reduce((value, current) => value && current, true);

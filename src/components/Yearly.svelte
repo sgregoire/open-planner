@@ -20,16 +20,6 @@
 		'Décembre'
 	];
 
-	const dayIndexMapper = {
-		1: 'Lu',
-		2: 'Ma',
-		3: 'Me',
-		4: 'Je',
-		5: 'Ve',
-		6: 'Sa',
-		0: 'Di'
-	};
-
 	const duration = moment.duration(
 		moment(root.timeframe.to).endOf('month').diff(moment(root.timeframe.from).startOf('month'))
 	);
