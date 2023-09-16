@@ -1,4 +1,4 @@
-![Build](https://github.com/github/docs/actions/workflows/build.yml/badge.svg)
+![Build](https://github.com/sgregoire/open-planner/actions/workflows/build.yml/badge.svg)
 
 # open-planner
 
