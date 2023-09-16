@@ -1,4 +1,4 @@
-[![CircleCI](https://dl.circleci.com/status-badge/img/circleci/4BUhvaNSWsTfV9VZB3zFZ1/5idGLepJE2YnBRAj4GjUL4/tree/main.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/circleci/4BUhvaNSWsTfV9VZB3zFZ1/5idGLepJE2YnBRAj4GjUL4/tree/main)
+![Build](https://github.com/github/docs/actions/workflows/build.yml/badge.svg)
 
 # open-planner
 
