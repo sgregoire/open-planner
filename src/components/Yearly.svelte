@@ -3,6 +3,7 @@
     import { root } from "../model/my-events";
 	import { matchingEvents } from "$lib/eventMatcher";
 	import { colorToRgb } from "$lib/colorHelper";
+	import { momentDateToDay } from "../model/momentUtils";
 
     const monthNames = [
         "Janvier",
@@ -55,7 +56,7 @@
             {#each month as day}
                 <div class="p-1 flex flex-row border">
                     <div class="mr-1">{day.date()}</div>
-                    <div class="mr-2">{dayIndexMapper[day.day()]}</div>
+                    <div class="mr-2">{momentDateToDay(day.day())}</div>
                     <div class="flex flex-1">
                         {#if matchingEvents(day, root).length > 0}
                             {#each matchingEvents(day, root) as event}

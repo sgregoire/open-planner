@@ -13,7 +13,7 @@ export type Color = {
 
 export type EventType = {
   name: string;
-  tags: ReadonlySet<string>;
+  tags: ReadonlyArray<string>;
   color?: Color;
   timeframe: Timeframe;
   exceptions: ReadonlyArray<Timeframe>;
@@ -26,7 +26,9 @@ export type Timeframe = {
 }
 
 // TODO @sgregoire: change to bits
-export type Day = "Mo" | "Tu" | "We" | "Th" | "Fr" | "Sa" | "Su";
+export enum Day {
+  Mo, Tu, We, Th, Fr, Sa, Su
+}
 export type Hour =  0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
   | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19
   | 20 | 21 | 22 | 23;

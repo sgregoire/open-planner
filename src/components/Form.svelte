@@ -5,7 +5,7 @@
         name: '',
         exceptions: [],
         occurences: [],
-        tags: new Set(),
+        tags: [],
         timeframe: {
             from: new Date(),
             to: new Date(),

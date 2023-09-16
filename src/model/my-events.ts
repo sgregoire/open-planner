@@ -1,5 +1,5 @@
 import moment from 'moment'
-import type { Day, EventType, Hour, Occurence, Root } from './root'
+import { Day, type EventType, type Hour, type Occurence, type Root } from './root'
 
 export const root: Root = {
     timeframe: {
@@ -9,10 +9,10 @@ export const root: Root = {
     eventTypes: [
         {
             name: "event-1",
-            tags: new Set([
+            tags: [
                 "tag1",
                 "tag2",
-            ]),
+            ],
             timeframe: {
                 from: moment("2023-09-01").toDate(),
                 to: moment("2024-06-01").toDate(),
@@ -25,7 +25,7 @@ export const root: Root = {
             ],
             occurences: [
                 {
-                    day: "Mo",
+                    day: Day.Mo,
                     from: {
                         hour: 10,
                         minute: 30, 
@@ -36,7 +36,7 @@ export const root: Root = {
                     },
                 },
                 {
-                    day: "Th",
+                    day: Day.Th,
                     from: {
                         hour: 8,
                         minute: 30, 
@@ -47,7 +47,7 @@ export const root: Root = {
                     },
                 },
                 {
-                    day: "Fr",
+                    day: Day.Fr,
                     from: {
                         hour: 11,
                         minute: 30, 
@@ -61,10 +61,10 @@ export const root: Root = {
         },
         {
             name: "event-2",
-            tags: new Set([
+            tags: [
                 "tag1",
                 "tag2",
-            ]),
+            ],
             timeframe: {
                 from: moment("2023-09-01").toDate(),
                 to: moment("2024-06-01").toDate(),
@@ -77,7 +77,7 @@ export const root: Root = {
             ],
             occurences: [
                 {
-                    day: "Mo",
+                    day: Day.Mo,
                     from: {
                         hour: 8,
                         minute: 30, 
@@ -88,7 +88,7 @@ export const root: Root = {
                     },
                 },
                 {
-                    day: "Mo",
+                    day: Day.Mo,
                     from: {
                         hour: 11,
                         minute: 30, 
@@ -99,7 +99,7 @@ export const root: Root = {
                     },
                 },
                 {
-                    day: "Tu",
+                    day: Day.Tu,
                     from: {
                         hour: 10,
                         minute: 30, 
@@ -110,7 +110,7 @@ export const root: Root = {
                     },
                 },
                 {
-                    day: "We",
+                    day: Day.We,
                     from: {
                         hour: 10,
                         minute: 30, 
@@ -129,18 +129,6 @@ export const root: Root = {
             to: moment("2023-10-01").toDate(),
         }
     ]
-}
-
-function indexToDay(idx: number): Day {
-    switch (idx) {
-        case 1: return "Mo";
-        case 2: return "Tu";
-        case 3: return "We";
-        case 4: return "Th";
-        case 5: return "Fr";
-        case 6: return "Sa";
-        default: return "Su";
-    };
 }
 
 export function weekEventGenerator(number: number) {

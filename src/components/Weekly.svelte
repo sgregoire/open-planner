@@ -1,10 +1,10 @@
 <script lang="ts">
-	import type { Day, Hour, Occurence, Time } from "../model";
+	import { Day, type Hour, type Time } from "../model";
     import { weekEventGenerator } from "../model/my-events";
 	import { generateColors } from "../color-generator";
 	import { onMount } from "svelte";
-	import moment from "moment";
 	import { colorToRgb } from "$lib/colorHelper";
+	import { isOverlapping } from "$lib/timeUtil";
 
     let container: HTMLDivElement;
 
@@ -35,49 +35,20 @@
     const toHour = Math.max(...tos) as Hour;
 
     const hoursToDisplay = toHour - fromHour
-
     function dayOffset(day: Day) {
         switch(day) {
-            case 'Mo': return 0;
-            case 'Tu': return 1;
-            case 'We': return 2;
-            case 'Th': return 3;
-            case 'Fr': return 4;
-            case 'Sa': return 5;
-            case 'Su': return 6;
+            case Day.Mo: return 0;
+            case Day.Tu: return 1;
+            case Day.We: return 2;
+            case Day.Th: return 3;
+            case Day.Fr: return 4;
+            case Day.Sa: return 5;
+            case Day.Su: return 6;
         }
     }
 
     function computeDuration(from: Time, to: Time) {
         return (to.hour - from.hour) * 60 - from.minute + to.minute;
-    }
-
-    function dayToMomentIndex(d: Day) {
-        switch (d) {
-            case "Mo": return 1;
-            case "Tu": return 2;
-            case "We": return 3;
-            case "Th": return 4;
-            case "Fr": return 5;
-            case "Sa": return 6;
-            case "Su": return 0;
-        };
-    }
-    function isOverlapping(a: Occurence, b: Occurence) {
-        const aDate = moment().day(dayToMomentIndex(a.day));
-        const aFrom = new Date(aDate.toDate().setHours(a.from.hour, a.from.minute, 0, 0));
-        const aTo = new Date(aDate.toDate().setHours(a.to.hour, a.to.minute, 0, 0));
-        
-        const bDate = moment().day(dayToMomentIndex(b.day));
-        const bFrom = new Date(bDate.toDate().setHours(b.from.hour, b.from.minute, 0, 0));
-        const bTo = new Date(bDate.toDate().setHours(b.to.hour, b.to.minute, 0, 0));
-
-        // If an event ends before the other starts
-        if(aTo <= bFrom || bTo <= aFrom) {
-            return false;
-        }
-
-        return true;
     }
 
     function paint() {
