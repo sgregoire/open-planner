@@ -4,6 +4,7 @@
     import Yearly from "../components/Yearly.svelte";
 	import Weekly from "../components/Weekly.svelte";
 	import { colorToRgb } from "$lib/colorHelper";
+	import Form from "../components/Form.svelte";
 
     const colors = generateColors(root.eventTypes.filter(it => it.color === undefined).length);
     let cnt = 0;
@@ -31,4 +32,5 @@
 </div>
 
 <!-- <Yearly /> -->
-<Weekly />
+<!-- <Weekly /> -->
+<Form />
