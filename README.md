@@ -1,3 +1,5 @@
+[![CircleCI](https://dl.circleci.com/status-badge/img/circleci/4BUhvaNSWsTfV9VZB3zFZ1/5idGLepJE2YnBRAj4GjUL4/tree/main.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/circleci/4BUhvaNSWsTfV9VZB3zFZ1/5idGLepJE2YnBRAj4GjUL4/tree/main)
+
 # open-planner
 
 Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte).
