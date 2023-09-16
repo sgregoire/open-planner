@@ -36,16 +36,31 @@ export function timeChecker(time: Time) {
 	return betweenCheck(time.hour, 0, 23) && betweenCheck(time.minute, 0, 59);
 }
 
+function timeToNumber(time: Time) {
+	return 60 * time.hour + time.minute;
+}
+export function precedenceCheck(from: Time, to: Time) {
+	return timeToNumber(from) < timeToNumber(to);
+}
+
 export function occurenceChecker(occurence: Occurence) {
-	return timeChecker(occurence.from) && timeChecker(occurence.to);
+	return (
+		timeChecker(occurence.from) &&
+		timeChecker(occurence.to) &&
+		precedenceCheck(occurence.from, occurence.to)
+	);
 }
 
 export function eventTypeChecker(eventType: EventType) {
-	return nonEmptyString(eventType.name) && tagsChecker(eventType.tags) && eventType.color
-		? colorChecker(eventType.color)
-		: true &&
-				reduceCheckResults(eventType.exceptions.map(timeframeChecker)) &&
-				reduceCheckResults(eventType.occurences.map(occurenceChecker));
+	const colorCheck = eventType.color ? colorChecker(eventType.color) : true;
+	return (
+		nonEmptyString(eventType.name) &&
+		tagsChecker(eventType.tags) &&
+		timeframeChecker(eventType.timeframe) &&
+		colorCheck &&
+		reduceCheckResults(eventType.exceptions.map(timeframeChecker)) &&
+		reduceCheckResults(eventType.occurences.map(occurenceChecker))
+	);
 }
 
 export function rootChecker(root: Root) {

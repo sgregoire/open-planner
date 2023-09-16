@@ -6,7 +6,7 @@ import {
 	rootDecoder,
 	timeDecoder,
 	timeframeDecoder
-} from '../../src/model/decoders';
+} from '../../src/lib/decoders';
 import moment from 'moment';
 import { Day } from '../../src/model';
 
@@ -193,7 +193,7 @@ describe('Decoders test', () => {
 					from: moment('2023-09-01').toDate(),
 					to: moment('2023-09-03').toDate()
 				},
-				exception: [
+				exceptions: [
 					{
 						from: moment('2023-09-01').toDate(),
 						to: moment('2023-09-03').toDate()
@@ -201,7 +201,7 @@ describe('Decoders test', () => {
 				],
 				occurences: [
 					{
-						day: 'Mo',
+						day: Day.Mo,
 						from: {
 							hour: 10,
 							minute: 30

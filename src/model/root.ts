@@ -121,8 +121,8 @@ export type Minute =
 	| 58
 	| 59;
 export type Time = {
-	hour: Hour;
-	minute: Minute;
+	hour: number;
+	minute: number;
 };
 
 export type Occurence = {
