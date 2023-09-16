@@ -1,319 +1,326 @@
-import { describe, expect, test } from "vitest";
-import { colorDecoder, eventTypeDecoder, occurenceDecoder, rootDecoder, timeDecoder, timeframeDecoder } from "../../src/model/decoders";
-import moment from "moment";
-import { Day } from "../../src/model";
+import { describe, expect, test } from 'vitest';
+import {
+	colorDecoder,
+	eventTypeDecoder,
+	occurenceDecoder,
+	rootDecoder,
+	timeDecoder,
+	timeframeDecoder
+} from '../../src/model/decoders';
+import moment from 'moment';
+import { Day } from '../../src/model';
 
-describe("Decoders test", () => {
-    describe("Timeframe decoder", () => {
-        test("missing attributes should fail", () => {
-            const element = {
-                from: moment("2023-09-01").toDate(),
-            };
+describe('Decoders test', () => {
+	describe('Timeframe decoder', () => {
+		test('missing attributes should fail', () => {
+			const element = {
+				from: moment('2023-09-01').toDate()
+			};
 
-            expect(() => timeframeDecoder.verify(element)).toThrow();
-        });
-    
-        test("wrong types should fail", () => {
-            const element = {
-                from: 'hello',
-                to: 'world',
-            };
+			expect(() => timeframeDecoder.verify(element)).toThrow();
+		});
 
-            expect(() => timeframeDecoder.verify(element)).toThrow();
-        });
+		test('wrong types should fail', () => {
+			const element = {
+				from: 'hello',
+				to: 'world'
+			};
 
-        test("good types should give real object", () => {
-            const element = {
-                from: moment("2023-09-01").toDate(),
-                to: moment("2023-09-03").toDate(),
-            };
+			expect(() => timeframeDecoder.verify(element)).toThrow();
+		});
 
-            const timeframe = timeframeDecoder.verify(element);
-            
-            const from = moment(timeframe.from);
-            expect(from.year()).toBe(2023)
-            expect(from.month()).toBe(8)
-            expect(from.date()).toBe(1)
-            
-            const to = moment(timeframe.to);
-            expect(to.year()).toBe(2023)
-            expect(to.month()).toBe(8)
-            expect(to.date()).toBe(3)
-        })
-    });
+		test('good types should give real object', () => {
+			const element = {
+				from: moment('2023-09-01').toDate(),
+				to: moment('2023-09-03').toDate()
+			};
 
-    describe("Time decoder", () => {
-        test("missing attributes should fail", () => {
-            const element = {
-                hour: 20,
-            };
+			const timeframe = timeframeDecoder.verify(element);
 
-            expect(() => timeDecoder.verify(element)).toThrow();
-        });
-    
-        test("wrong types should fail", () => {
-            const element = {
-                hour: 'hello',
-                minute: 'world',
-            };
+			const from = moment(timeframe.from);
+			expect(from.year()).toBe(2023);
+			expect(from.month()).toBe(8);
+			expect(from.date()).toBe(1);
 
-            expect(() => timeDecoder.verify(element)).toThrow();
-        });
+			const to = moment(timeframe.to);
+			expect(to.year()).toBe(2023);
+			expect(to.month()).toBe(8);
+			expect(to.date()).toBe(3);
+		});
+	});
 
-        test("good types should give real object", () => {
-            const element = {
-                hour: 20,
-                minute: 30,
-            };
-            const time = timeDecoder.verify(element);
-       
-            expect(time.hour).toBe(20)
-            expect(time.minute).toBe(30)
-        })
-    })
+	describe('Time decoder', () => {
+		test('missing attributes should fail', () => {
+			const element = {
+				hour: 20
+			};
 
-    describe("Occurence decoder", () => {
-        test("missing attributes should fail", () => {
-            const element = {
-                day: Day.Fr,
-            };
+			expect(() => timeDecoder.verify(element)).toThrow();
+		});
 
-            expect(() => occurenceDecoder.verify(element)).toThrow();
-        });
-    
-        test("wrong types should fail", () => {
-            const element = {
-                day: 'hello',
-                from: 'world',
-                to: '!',
-            };
+		test('wrong types should fail', () => {
+			const element = {
+				hour: 'hello',
+				minute: 'world'
+			};
 
-            expect(() => occurenceDecoder.verify(element)).toThrow();
-        });
+			expect(() => timeDecoder.verify(element)).toThrow();
+		});
 
-        test("good types should give real object", () => {
-            const element = {
-                day: Day.Fr,
-                from: {
-                    hour: 20,
-                    minute: 30,
-                },
-                to: {
-                    hour: 21,
-                    minute: 30,
-                },
-            };
+		test('good types should give real object', () => {
+			const element = {
+				hour: 20,
+				minute: 30
+			};
+			const time = timeDecoder.verify(element);
 
-            const occurence = occurenceDecoder.verify(element);
-            
-            expect(occurence.day).toBe(Day.Fr)
+			expect(time.hour).toBe(20);
+			expect(time.minute).toBe(30);
+		});
+	});
 
-            expect(occurence.from).toBeDefined()
-            expect(occurence.to).toBeDefined()
-        })
-    })
+	describe('Occurence decoder', () => {
+		test('missing attributes should fail', () => {
+			const element = {
+				day: Day.Fr
+			};
 
-    describe("Color decoder", () => {
-        test("missing attributes should fail", () => {
-            const element = {
-                red: 255,
-            };
+			expect(() => occurenceDecoder.verify(element)).toThrow();
+		});
 
-            expect(() => colorDecoder.verify(element)).toThrow();
-        });
-        
-        test("wrong types should fail", () => {
-            const element = {
-                red: "yes",
-                green: "no",
-                blue: "maybe",
-            };
+		test('wrong types should fail', () => {
+			const element = {
+				day: 'hello',
+				from: 'world',
+				to: '!'
+			};
 
-            expect(() => colorDecoder.verify(element)).toThrow();
-        });
+			expect(() => occurenceDecoder.verify(element)).toThrow();
+		});
 
-        test("good types should give real object", () => {
-            const element = {
-                red: 245,
-                green: 245,
-                blue: 245,
-            };
+		test('good types should give real object', () => {
+			const element = {
+				day: Day.Fr,
+				from: {
+					hour: 20,
+					minute: 30
+				},
+				to: {
+					hour: 21,
+					minute: 30
+				}
+			};
 
-            const color = colorDecoder.verify(element);
+			const occurence = occurenceDecoder.verify(element);
 
-            expect(color.red).toBe(element.red)
-            expect(color.green).toBe(element.green)
-            expect(color.blue).toBe(element.blue)
-        })
-    })
+			expect(occurence.day).toBe(Day.Fr);
 
-    describe("EventType decoder", () => {
-        test("missing attributes should fail", () => {
-            const element = {
-                name: 12,
-                tags: 'value',
-                color: 'red',
-                timeframe: 'timeframe',
-                exception: 'timeframeDecoder',
-            };
+			expect(occurence.from).toBeDefined();
+			expect(occurence.to).toBeDefined();
+		});
+	});
 
-            expect(() => eventTypeDecoder.verify(element)).toThrow();
-        });
+	describe('Color decoder', () => {
+		test('missing attributes should fail', () => {
+			const element = {
+				red: 255
+			};
 
-        test("wrong types should fail", () => {
-            const element = {
-                name: 12,
-                tags: 'value',
-                color: 'red',
-                timeframe: 'timeframe',
-                exception: 'timeframeDecoder',
-                occurences: 'occurenceDecoder'
-            };
+			expect(() => colorDecoder.verify(element)).toThrow();
+		});
 
-            expect(() => eventTypeDecoder.verify(element)).toThrow();
-        })
+		test('wrong types should fail', () => {
+			const element = {
+				red: 'yes',
+				green: 'no',
+				blue: 'maybe'
+			};
 
-        test("good types should give real object", () => {
-            const element = {
-                name: 'my-event',
-                tags: [ 'hello', 'world' ],
-                color: {
-                    red: 123,
-                    green: 123,
-                    blue: 123,
-                },
-                timeframe: {
-                    from: moment("2023-09-01").toDate(),
-                    to: moment("2023-09-03").toDate(),
-                },
-                exception: [
-                    {
-                        from: moment("2023-09-01").toDate(),
-                        to: moment("2023-09-03").toDate(),
-                    },
-                ],
-                occurences: [
-                    {
-                        day: 'Mo',
-                        from: {
-                            hour: 10,
-                            minute: 30,
-                        },
-                        to: {
-                            hour: 11,
-                            minute: 30,
-                        }
-                    }
-                ]
-            };
+			expect(() => colorDecoder.verify(element)).toThrow();
+		});
 
-            const eventType = eventTypeDecoder.verify(element);
+		test('good types should give real object', () => {
+			const element = {
+				red: 245,
+				green: 245,
+				blue: 245
+			};
 
-            expect(eventType.name).toBe('my-event')
+			const color = colorDecoder.verify(element);
 
-            expect(eventType.tags).toHaveLength(2);
-            expect(eventType.tags).toContain('hello');
-            expect(eventType.tags).toContain('world');
+			expect(color.red).toBe(element.red);
+			expect(color.green).toBe(element.green);
+			expect(color.blue).toBe(element.blue);
+		});
+	});
 
-            expect(eventType.color).toBeDefined();
-            expect(eventType.timeframe).toBeDefined();
-            expect(eventType.exceptions).toHaveLength(1)
-            expect(eventType.occurences).toHaveLength(1)
-        })
+	describe('EventType decoder', () => {
+		test('missing attributes should fail', () => {
+			const element = {
+				name: 12,
+				tags: 'value',
+				color: 'red',
+				timeframe: 'timeframe',
+				exception: 'timeframeDecoder'
+			};
 
-        test("good types should give real object with minimal definition", () => {
-            const element = {
-                name: 'my-event',
-                tags: [],
-                timeframe: {
-                    from: moment("2023-09-01").toDate(),
-                    to: moment("2023-09-03").toDate(),
-                },
-                exceptions: [],
-                occurences: []
-            };
+			expect(() => eventTypeDecoder.verify(element)).toThrow();
+		});
 
-            const eventType = eventTypeDecoder.verify(element);
+		test('wrong types should fail', () => {
+			const element = {
+				name: 12,
+				tags: 'value',
+				color: 'red',
+				timeframe: 'timeframe',
+				exception: 'timeframeDecoder',
+				occurences: 'occurenceDecoder'
+			};
 
-            expect(eventType.name).toBe('my-event')
+			expect(() => eventTypeDecoder.verify(element)).toThrow();
+		});
 
-            expect(eventType.tags).toHaveLength(0);
+		test('good types should give real object', () => {
+			const element = {
+				name: 'my-event',
+				tags: ['hello', 'world'],
+				color: {
+					red: 123,
+					green: 123,
+					blue: 123
+				},
+				timeframe: {
+					from: moment('2023-09-01').toDate(),
+					to: moment('2023-09-03').toDate()
+				},
+				exception: [
+					{
+						from: moment('2023-09-01').toDate(),
+						to: moment('2023-09-03').toDate()
+					}
+				],
+				occurences: [
+					{
+						day: 'Mo',
+						from: {
+							hour: 10,
+							minute: 30
+						},
+						to: {
+							hour: 11,
+							minute: 30
+						}
+					}
+				]
+			};
 
-            expect(eventType.color).toBeUndefined();
-            expect(eventType.timeframe).toBeDefined();
-            expect(eventType.exceptions).toHaveLength(0)
-            expect(eventType.occurences).toHaveLength(0)
-        })
-    })
+			const eventType = eventTypeDecoder.verify(element);
 
-    describe("Root decoder", () => {
-        test("missing attributes should fail", () => {
-            const element = {
-                exceptions: [],
-                eventTypes: [],
-            };
+			expect(eventType.name).toBe('my-event');
 
-            expect(() => rootDecoder.verify(element)).toThrow();
-        });
+			expect(eventType.tags).toHaveLength(2);
+			expect(eventType.tags).toContain('hello');
+			expect(eventType.tags).toContain('world');
 
-        test("wrong types should fail", () => {
-            const element = {
-                timeframe: 'timeframe',
-                exceptions: 'exceptions',
-                eventTypes: 'eventTypes',
-            };
+			expect(eventType.color).toBeDefined();
+			expect(eventType.timeframe).toBeDefined();
+			expect(eventType.exceptions).toHaveLength(1);
+			expect(eventType.occurences).toHaveLength(1);
+		});
 
-            expect(() => rootDecoder.verify(element)).toThrow();
-        })
+		test('good types should give real object with minimal definition', () => {
+			const element = {
+				name: 'my-event',
+				tags: [],
+				timeframe: {
+					from: moment('2023-09-01').toDate(),
+					to: moment('2023-09-03').toDate()
+				},
+				exceptions: [],
+				occurences: []
+			};
 
-        test("good types should give real object", () => {
-            const element = {
-                timeframe: {
-                    from: moment("2023-09-01").toDate(),
-                    to: moment("2023-09-03").toDate(),
-                },
-                exceptions: [
-                    {
-                        from: moment("2023-09-01").toDate(),
-                        to: moment("2023-09-03").toDate(),
-                    },
-                ],
-                eventTypes: [
-                    {
-                        name: 'my-event',
-                        tags: [],
-                        timeframe: {
-                            from: moment("2023-09-01").toDate(),
-                            to: moment("2023-09-03").toDate(),
-                        },
-                        exceptions: [],
-                        occurences: []
-                    }
-                ],
-            };
+			const eventType = eventTypeDecoder.verify(element);
 
-            const root = rootDecoder.verify(element);
+			expect(eventType.name).toBe('my-event');
 
-            expect(root.timeframe).toBeDefined();
-            expect(root.exceptions).toHaveLength(1);
-            expect(root.eventTypes).toHaveLength(1);
-        })
+			expect(eventType.tags).toHaveLength(0);
 
-        test("good types should give real object with minimal definition", () => {
-            const element = {
-                timeframe: {
-                    from: moment("2023-09-01").toDate(),
-                    to: moment("2023-09-03").toDate(),
-                },
-                exceptions: [],
-                eventTypes: [],
-            };
+			expect(eventType.color).toBeUndefined();
+			expect(eventType.timeframe).toBeDefined();
+			expect(eventType.exceptions).toHaveLength(0);
+			expect(eventType.occurences).toHaveLength(0);
+		});
+	});
 
-            const root = rootDecoder.verify(element);
+	describe('Root decoder', () => {
+		test('missing attributes should fail', () => {
+			const element = {
+				exceptions: [],
+				eventTypes: []
+			};
 
-            expect(root.timeframe).toBeDefined();
-            expect(root.exceptions).toHaveLength(0);
-            expect(root.eventTypes).toHaveLength(0);
-        })
-    })
-})
+			expect(() => rootDecoder.verify(element)).toThrow();
+		});
+
+		test('wrong types should fail', () => {
+			const element = {
+				timeframe: 'timeframe',
+				exceptions: 'exceptions',
+				eventTypes: 'eventTypes'
+			};
+
+			expect(() => rootDecoder.verify(element)).toThrow();
+		});
+
+		test('good types should give real object', () => {
+			const element = {
+				timeframe: {
+					from: moment('2023-09-01').toDate(),
+					to: moment('2023-09-03').toDate()
+				},
+				exceptions: [
+					{
+						from: moment('2023-09-01').toDate(),
+						to: moment('2023-09-03').toDate()
+					}
+				],
+				eventTypes: [
+					{
+						name: 'my-event',
+						tags: [],
+						timeframe: {
+							from: moment('2023-09-01').toDate(),
+							to: moment('2023-09-03').toDate()
+						},
+						exceptions: [],
+						occurences: []
+					}
+				]
+			};
+
+			const root = rootDecoder.verify(element);
+
+			expect(root.timeframe).toBeDefined();
+			expect(root.exceptions).toHaveLength(1);
+			expect(root.eventTypes).toHaveLength(1);
+		});
+
+		test('good types should give real object with minimal definition', () => {
+			const element = {
+				timeframe: {
+					from: moment('2023-09-01').toDate(),
+					to: moment('2023-09-03').toDate()
+				},
+				exceptions: [],
+				eventTypes: []
+			};
+
+			const root = rootDecoder.verify(element);
+
+			expect(root.timeframe).toBeDefined();
+			expect(root.exceptions).toHaveLength(0);
+			expect(root.eventTypes).toHaveLength(0);
+		});
+	});
+});

@@ -5,9 +5,7 @@ export default defineConfig({
 	plugins: [sveltekit()],
 	test: {
 		deps: {
-			inline: [
-				"moment"
-			]
+			inline: ['moment']
 		},
 		coverage: {
 			provider: 'istanbul'
