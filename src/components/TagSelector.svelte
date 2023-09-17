@@ -4,9 +4,9 @@
   export let eventTypes: EventType[];
   export let selected: string[];
   export let selectionCallback: (tags: string[]) => void;
-  
+
   const tags = new Set(eventTypes.flatMap((it) => Array.from(it.tags)));
-  
+
   function tagSelected(tag: string, currentlyChecked: boolean) {
     if (currentlyChecked) {
       selectionCallback(selected.filter((it) => it != tag));
