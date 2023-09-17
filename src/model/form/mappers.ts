@@ -1,6 +1,7 @@
 import moment from 'moment';
-import type { Timeframe, Time, Occurence, EventType } from '../root';
+import type { Timeframe, Time, Occurence, EventType, Root } from '../root';
 import type { EditableEvent, EditableOccurence, EditableTimeframe } from './EditableEvent';
+import type { EditableRoot } from './EditableRoot';
 
 export function dateToString(date: Date) {
   return [
@@ -53,5 +54,13 @@ export function editableToEvent(event: EditableEvent): EventType {
     occurences: event.occurences.map(editableOccurenceToOccurence),
     tags: event.tags,
     timeframe: editableTimeframeToTimeframe(event.timeframe),
+  };
+}
+
+export function editableRootToRoot(root: EditableRoot): Root {
+  return {
+    timeframe: editableTimeframeToTimeframe(root.timeframe),
+    exceptions: root.exceptions.map(editableTimeframeToTimeframe),
+    eventTypes: root.eventTypes.map(editableToEvent),
   };
 }

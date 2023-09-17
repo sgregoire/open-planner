@@ -18,9 +18,8 @@
     {#if hasContext('root')}
       <a href="/weekly" class="btn btn-ghost"><CalendarWeekend />weekly</a>
       <a href="/yearly" class="btn btn-ghost"><CalendarMonth />Yearly</a>
-    {:else}
-      <a href="/form" class="btn btn-ghost"><Pencil />Create</a>
     {/if}
+    <a href="/form" class="btn btn-ghost"><Pencil />Edit</a>
     <ImportEvents />
     <ExportEvents />
   </div>

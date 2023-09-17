@@ -1,5 +1,4 @@
-import moment from 'moment';
-import type { Day, EventType, Occurence, Time, Timeframe } from '../root';
+import type { Day } from '../root';
 
 export type EditableTimeframe = {
   from: string;
