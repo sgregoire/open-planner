@@ -2,6 +2,7 @@
   import { getContext, hasContext } from 'svelte';
   import type { Root } from '../model';
   import type { Writable } from 'svelte/store';
+  import Download from 'svelte-material-icons/Download.svelte';
 
   const root = getContext<Writable<Root>>('root');
 
@@ -18,4 +19,6 @@
   }
 </script>
 
-<button class="btn btn-neutral" on:click={download} disabled={!hasContext('root')}>Export</button>
+<button class="btn btn-ghost" on:click={download} disabled={!hasContext('root')}>
+  <Download />Export
+</button>

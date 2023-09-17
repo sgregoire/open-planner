@@ -5,6 +5,7 @@
   import { writable } from 'svelte/store';
   import { generateColors } from '$lib/color-generator';
   import type { Root } from '../model';
+  import Upload from 'svelte-material-icons/Upload.svelte';
 
   let file = writable<null | File>(null);
   let loading = writable(false);
@@ -53,9 +54,9 @@
 
 <input bind:this={fileInput} type="file" accept=".json" class="hidden" on:input={onFileInput} />
 
-<button class="btn btn-neutral" on:click={selectFile}>
+<button class="btn btn-ghost" on:click={selectFile}>
   {#if $loading}
     <span class="loading loading-spinner" />
   {/if}
-  Import
+  <Upload />Import
 </button>
