@@ -4,14 +4,13 @@
 
   export let eventTypes: EventType[];
   export let selected: string[];
-  export let selectedEventsCallback: (e: EventType[]) => void;
+  export let selectionCallback: (names: string[]) => void;
 
   function eventSelected(event: EventType, currentlyChecked: boolean) {
     if (currentlyChecked) {
-      const newSelection = selected.filter((it) => it != event.name);
-      selectedEventsCallback(eventTypes.filter((it) => newSelection.includes(it.name)));
+      selectionCallback(selected.filter((it) => it != event.name));
     } else {
-      selectedEventsCallback(eventTypes.filter((it) => selected.includes(it.name) || it.name == event.name));
+      selectionCallback([...selected, event.name])
     }
   }
 </script>

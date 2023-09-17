@@ -7,7 +7,7 @@
   import { isOverlapping } from '$lib/timeUtil';
   import TagSelector from '../../components/TagSelector.svelte';
   import EventSelector from '../../components/EventSelector.svelte';
-  import { get, writable } from 'svelte/store';
+  import { writable } from 'svelte/store';
 
   let container: HTMLDivElement;
 
@@ -15,18 +15,25 @@
 
   const root = weekEventGenerator(50);
 
-  const displayableEventsStore = writable(root.eventTypes.map((it) => it.name));
+  let displayableEventsNames = root.eventTypes.map((it) => it.name);
+  const displayableEventsStore = writable(displayableEventsNames);
+  displayableEventsStore.subscribe((value) => displayableEventsNames = value)
 
-  function selectedEventsCallback(eventTypes: EventType[]) {
-    const newDisplayable = eventTypes.map((it) => it.name);
-    console.log(
-      'Got new selections, excluding',
-      root.eventTypes.filter((it) => !newDisplayable.includes(it.name)).map((it) => it.name),
-      newDisplayable.length,
-    );
-    displayableEventsStore.set(newDisplayable);
+  function selectedEventsNameCallback(names: string[]) {
+    displayableEventsStore.set(names);
     paint();
   }
+
+  let displayableEventsTags = Array.from(new Set(root.eventTypes.flatMap((it) => it.tags)));
+  const canFilterTags = displayableEventsTags.length > 0;
+  const displayableEventsTagsStore = writable(displayableEventsTags);
+  displayableEventsTagsStore.subscribe((value) => displayableEventsTags = value)
+
+  function selectedEventsTagsCallback(tags: string[]) {
+    displayableEventsTagsStore.set(tags);
+    paint();
+  }
+
 
   const colors = generateColors(root.eventTypes.filter((it) => it.color === undefined).length);
   let cnt = 0;
@@ -68,6 +75,7 @@
   }
 
   function paint() {
+    // TODO @sgregoire: Fix repaint
     container.childNodes.forEach((it) => it.remove());
 
     const dayLabels: HTMLDivElement[] = [];
@@ -147,9 +155,15 @@
       elt.style.setProperty('left', `${hourWidth + idx * dayWidth}px`);
     });
 
-    const displayableEvents = get(displayableEventsStore);
+    
     root.eventTypes
-      .filter((eventType) => displayableEvents.includes(eventType.name))
+      .filter((eventType) => {
+        if (canFilterTags) {
+          return eventType.tags.map(tag => displayableEventsTags.includes(tag)).reduce((val, cur) => val || cur, false)
+        }
+        return true
+      })
+      .filter((eventType) => displayableEventsNames.includes(eventType.name))
       .forEach((eventType) => {
         eventType.occurences.forEach((occurence) => {
           const overlappingOccurences = root.eventTypes
@@ -207,8 +221,10 @@
   });
 </script>
 
-<TagSelector eventTypes={root.eventTypes} />
-<EventSelector eventTypes={root.eventTypes} selected={get(displayableEventsStore)} {selectedEventsCallback} />
+{#if canFilterTags}
+  <TagSelector eventTypes={root.eventTypes} selected={displayableEventsTags} selectionCallback={selectedEventsTagsCallback} />
+{/if}
+<EventSelector eventTypes={root.eventTypes} selected={displayableEventsNames} selectionCallback={selectedEventsNameCallback} />
 <div class="w-screen h-screen relative">
   <div bind:this={container} class="absolute top-0 bottom-0 left-0 right-0 bg-slate-400" />
 </div>
