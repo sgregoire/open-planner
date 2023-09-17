@@ -1,6 +1,6 @@
 <script lang="ts">
-  import type { EditableOccurence, EditableTimeframe } from '../../model/form/EditableEvent';
-  import { Day, type Time } from '../../model';
+  import type { EditableOccurence } from '../../model/form/EditableEvent';
+  import { Day } from '../../model';
 
   export let occurence: EditableOccurence;
   export let id: string;

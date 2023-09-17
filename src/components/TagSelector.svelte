@@ -23,7 +23,7 @@
       <input
         id={`tag-selector-${i}`}
         type="checkbox"
-        on:change={(e) => tagSelected(tag, selected.includes(tag))}
+        on:change={() => tagSelected(tag, selected.includes(tag))}
         checked={selected.includes(tag)}
       />
     </div>

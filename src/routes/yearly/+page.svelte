@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { getContext, hasContext } from 'svelte';
+  import { getContext } from 'svelte';
   import moment from 'moment';
   import { matchingEvents } from '$lib/eventMatcher';
   import { colorToRgb } from '$lib/colorHelper';

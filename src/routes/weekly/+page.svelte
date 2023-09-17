@@ -1,7 +1,6 @@
 <script lang="ts">
-  import { Day, type EventType, type Hour, type Root, type Time } from '../../model';
-  import { getContext, hasContext } from 'svelte';
-  import { generateColors } from '$lib/color-generator';
+  import { Day, type Hour, type Root, type Time } from '../../model';
+  import { getContext } from 'svelte';
   import { onMount } from 'svelte';
   import { colorToRgb } from '$lib/colorHelper';
   import { isOverlapping } from '$lib/timeUtil';

@@ -25,7 +25,7 @@
       <input
         id={`event-selector-${i}`}
         type="checkbox"
-        on:change={(e) => eventSelected(event, selected.includes(event.name))}
+        on:change={() => eventSelected(event, selected.includes(event.name))}
         checked={selected.includes(event.name)}
       />
     </div>

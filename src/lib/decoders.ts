@@ -1,4 +1,4 @@
-import { date, object, type Decoder, array, set, optional, string, oneOf, positiveInteger } from 'decoders';
+import { date, object, type Decoder, array, optional, string, oneOf, positiveInteger } from 'decoders';
 import { Day, type Color, type EventType, type Occurence, type Root, type Time, type Timeframe } from '../model/root';
 
 export const timeframeDecoder: Decoder<Timeframe> = object({
