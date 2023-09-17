@@ -3,6 +3,9 @@
   import { Day, type Time } from '../../model';
   import type { EditableEvent } from '../../model/form/EditableEvent';
   import { dateToString } from '../../model/form/mappers';
+  import ExceptionForm from '../../components/form/ExceptionForm.svelte';
+  import OccurenceForm from '../../components/form/OccurenceForm.svelte';
+  import TagFrom from '../../components/form/TagFrom.svelte';
 
   const event = writable({
     name: '',
@@ -92,76 +95,16 @@
   <fieldset>
     <legend>Occurences</legend>
     <input class="btn btn-neutral btn-sm" value="Add" type="button" on:click={addOccurence} />
-    {#each $event.occurences as occurence, i}
-      <div class="flex">
-        <input class="btn btn-error btn-sm" value="Remove" type="button" on:click={() => deleteOccurence(i)} />
-
-        <div class="form-control">
-          <label for={`event-occurence-${i}-day`} class="label">
-            <span class="label-text">Day</span>
-          </label>
-          <select name="Day" id={`event-occurence-${i}-day`} class="select select-bordered" bind:value={occurence.day}>
-            <option value={Day.Mo}>Monday</option>
-            <option value={Day.Tu}>Tuesday</option>
-            <option value={Day.We}>Wednesday</option>
-            <option value={Day.Th}>Thursday</option>
-            <option value={Day.Fr}>Friday</option>
-            <option value={Day.Sa}>Saturday</option>
-            <option value={Day.Su}>Sunday</option>
-          </select>
-        </div>
-
-        <div class="grid gap-4 grid-cols-1 md:grid-cols-2">
-          <div class="form-control">
-            <label for={`event-occurence-${i}-from`} class="label">
-              <span class="label-text">From</span>
-            </label>
-            <input
-              id={`event-occurence-${i}-from`}
-              type="time"
-              class="input input-bordered"
-              bind:value={occurence.from}
-            />
-          </div>
-
-          <div class="form-control">
-            <label for={`event-occurence-${i}-to`} class="label">
-              <span class="label-text">To</span>
-            </label>
-            <input id={`event-occurence-${i}-to`} type="time" class="input input-bordered" bind:value={occurence.to} />
-          </div>
-        </div>
-      </div>
+    {#each $event.occurences as occurence, index}
+      <OccurenceForm bind:occurence {index} deletionCallback={() => deleteOccurence(index)} />
     {/each}
   </fieldset>
 
   <fieldset>
     <legend>Exceptions</legend>
     <input class="btn btn-neutral btn-sm" value="Add" type="button" on:click={addException} />
-    {#each $event.exceptions as exception, i}
-      <div class="flex">
-        <input class="btn btn-error btn-sm" value="Remove" type="button" on:click={() => deleteException(i)} />
-        <div class="grid gap-4 grid-cols-1 md:grid-cols-2">
-          <div class="form-control">
-            <label for={`event-exception-${i}-from`}>
-              <span class="label-text">From</span>
-            </label>
-            <input
-              id={`event-exception-${i}-from`}
-              type="date"
-              class="input input-bordered"
-              bind:value={exception.from}
-            />
-          </div>
-
-          <div class="form-control">
-            <label for={`event-occurence-${i}-to`}>
-              <span class="label-text">To</span>
-            </label>
-            <input id={`event-occurence-${i}-to`} type="date" class="input input-bordered" bind:value={exception.to} />
-          </div>
-        </div>
-      </div>
+    {#each $event.exceptions as exception, index}
+      <ExceptionForm bind:exception {index} deletionCallback={() => deleteException(index)} />
     {/each}
   </fieldset>
 
@@ -169,17 +112,8 @@
     <legend>Tags</legend>
     <input class="btn btn-neutral btn-sm" value="Add" type="button" on:click={addTag} />
     <div class="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
-      {#each $event.tags as tag, i}
-        <div class="flex">
-          <input class="btn btn-error btn-sm" value="Remove" type="button" on:click={() => deleteTag(i)} />
-
-          <div class="form-control">
-            <label for={`event-tags-${i}`}>
-              <span class="label-text">Tag #{i + 1}</span>
-            </label>
-            <input id={`event-tags-${i}`} class="input input-bordered" bind:value={tag} />
-          </div>
-        </div>
+      {#each $event.tags as tag, index}
+        <TagFrom bind:tag {index} deletionCallback={() => deleteTag(index)} />
       {/each}
     </div>
   </fieldset>
