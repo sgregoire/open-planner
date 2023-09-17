@@ -10,7 +10,7 @@
     if (currentlyChecked) {
       selectionCallback(selected.filter((it) => it != event.name));
     } else {
-      selectionCallback([...selected, event.name])
+      selectionCallback([...selected, event.name]);
     }
   }
 </script>

@@ -17,7 +17,7 @@
 
   let displayableEventsNames = root.eventTypes.map((it) => it.name);
   const displayableEventsStore = writable(displayableEventsNames);
-  displayableEventsStore.subscribe((value) => displayableEventsNames = value)
+  displayableEventsStore.subscribe((value) => (displayableEventsNames = value));
 
   function selectedEventsNameCallback(names: string[]) {
     displayableEventsStore.set(names);
@@ -27,13 +27,12 @@
   let displayableEventsTags = Array.from(new Set(root.eventTypes.flatMap((it) => it.tags)));
   const canFilterTags = displayableEventsTags.length > 0;
   const displayableEventsTagsStore = writable(displayableEventsTags);
-  displayableEventsTagsStore.subscribe((value) => displayableEventsTags = value)
+  displayableEventsTagsStore.subscribe((value) => (displayableEventsTags = value));
 
   function selectedEventsTagsCallback(tags: string[]) {
     displayableEventsTagsStore.set(tags);
     paint();
   }
-
 
   const colors = generateColors(root.eventTypes.filter((it) => it.color === undefined).length);
   let cnt = 0;
@@ -155,13 +154,14 @@
       elt.style.setProperty('left', `${hourWidth + idx * dayWidth}px`);
     });
 
-    
     root.eventTypes
       .filter((eventType) => {
         if (canFilterTags) {
-          return eventType.tags.map(tag => displayableEventsTags.includes(tag)).reduce((val, cur) => val || cur, false)
+          return eventType.tags
+            .map((tag) => displayableEventsTags.includes(tag))
+            .reduce((val, cur) => val || cur, false);
         }
-        return true
+        return true;
       })
       .filter((eventType) => displayableEventsNames.includes(eventType.name))
       .forEach((eventType) => {
@@ -222,9 +222,17 @@
 </script>
 
 {#if canFilterTags}
-  <TagSelector eventTypes={root.eventTypes} selected={displayableEventsTags} selectionCallback={selectedEventsTagsCallback} />
+  <TagSelector
+    eventTypes={root.eventTypes}
+    selected={displayableEventsTags}
+    selectionCallback={selectedEventsTagsCallback}
+  />
 {/if}
-<EventSelector eventTypes={root.eventTypes} selected={displayableEventsNames} selectionCallback={selectedEventsNameCallback} />
+<EventSelector
+  eventTypes={root.eventTypes}
+  selected={displayableEventsNames}
+  selectionCallback={selectedEventsNameCallback}
+/>
 <div class="w-screen h-screen relative">
   <div bind:this={container} class="absolute top-0 bottom-0 left-0 right-0 bg-slate-400" />
 </div>
