@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { base } from '$app/paths';
   import Pencil from 'svelte-material-icons/Pencil.svelte';
 </script>
 
@@ -7,7 +8,7 @@
     <div class="max-w-md">
       <h1 class="text-5xl font-bold">Hello there</h1>
       <p class="py-6">To get started, load your events or start to create some!</p>
-      <a class="btn btn-primary" href="/form"><Pencil />Create your events</a>
+      <a class="btn btn-primary" href={`${base}/form`}><Pencil />Create your events</a>
     </div>
   </div>
 </div>
