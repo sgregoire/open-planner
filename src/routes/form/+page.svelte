@@ -1,11 +1,13 @@
 <script lang="ts">
   import { writable } from 'svelte/store';
-  import { Day, type Time } from '../../model';
+  import { Day, type Root, type Time } from '../../model';
   import type { EditableEvent } from '../../model/form/EditableEvent';
-  import { dateToString } from '../../model/form/mappers';
+  import { dateToString, editableToEvent } from '../../model/form/mappers';
   import ExceptionForm from '../../components/form/ExceptionForm.svelte';
   import OccurenceForm from '../../components/form/OccurenceForm.svelte';
   import TagFrom from '../../components/form/TagFrom.svelte';
+  import { setContext } from 'svelte';
+  import TimeframeFrom from '../../components/form/TimeframeFrom.svelte';
 
   const event = writable({
     name: '',
@@ -56,8 +58,17 @@
     $event.occurences = $event.occurences.toSpliced(index, 1);
   }
 
-  function submit(e: SubmitEvent) {
-    e.preventDefault();
+  function submit() {
+    const eventType = editableToEvent($event);
+
+    const root: Root = {
+      timeframe: eventType.timeframe,
+      eventTypes: [eventType],
+      exceptions: [],
+    };
+
+    // $rootContext = root;
+    setContext('root', writable(root));
   }
 </script>
 
@@ -76,35 +87,21 @@
     <input id="event-color" type="color" class="input input-bordered w-16" bind:value={$event.color} />
   </div>
 
-  <div class="grid gap-4 grid-cols-1 md:grid-cols-2">
-    <div class="form-control">
-      <label for="event-from" class="label">
-        <span class="label-text">From:</span>
-      </label>
-      <input id="event-from" type="date" class="input input-bordered" bind:value={$event.timeframe.from} />
-    </div>
-
-    <div class="form-control">
-      <label for="event-to" class="label">
-        <span class="label-text">To:</span>
-      </label>
-      <input id="event-to" type="date" class="input input-bordered" bind:value={$event.timeframe.to} />
-    </div>
-  </div>
+  <TimeframeFrom id="event" bind:timeframe={$event.timeframe} />
 
   <fieldset>
     <legend>Occurences</legend>
     <input class="btn btn-neutral btn-sm" value="Add" type="button" on:click={addOccurence} />
-    {#each $event.occurences as occurence, index}
-      <OccurenceForm bind:occurence {index} deletionCallback={() => deleteOccurence(index)} />
+    {#each $event.occurences as occurence, i}
+      <OccurenceForm id={`event-occurence-${i}`} bind:occurence deletionCallback={() => deleteOccurence(i)} />
     {/each}
   </fieldset>
 
   <fieldset>
     <legend>Exceptions</legend>
     <input class="btn btn-neutral btn-sm" value="Add" type="button" on:click={addException} />
-    {#each $event.exceptions as exception, index}
-      <ExceptionForm bind:exception {index} deletionCallback={() => deleteException(index)} />
+    {#each $event.exceptions as exception, i}
+      <ExceptionForm id={`event-exception-${i}`} bind:exception deletionCallback={() => deleteException(i)} />
     {/each}
   </fieldset>
 
@@ -112,8 +109,8 @@
     <legend>Tags</legend>
     <input class="btn btn-neutral btn-sm" value="Add" type="button" on:click={addTag} />
     <div class="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
-      {#each $event.tags as tag, index}
-        <TagFrom bind:tag {index} deletionCallback={() => deleteTag(index)} />
+      {#each $event.tags as tag, i}
+        <TagFrom id={`event-tags-${i}`} bind:tag deletionCallback={() => deleteTag(i)} />
       {/each}
     </div>
   </fieldset>

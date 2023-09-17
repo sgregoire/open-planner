@@ -1,6 +1,6 @@
 <script lang="ts">
   export let tag: string;
-  export let index: number;
+  export let id: string;
   export let deletionCallback: () => void;
 </script>
 
@@ -10,9 +10,9 @@
   </div>
 
   <div class="form-control">
-    <label for={`event-tags-${index}`}>
-      <span class="label-text">Tag #{index + 1}</span>
+    <label for={id}>
+      <span class="label-text">Tag</span>
     </label>
-    <input id={`event-tags-${index}`} class="input input-bordered" bind:value={tag} />
+    <input {id} class="input input-bordered" bind:value={tag} />
   </div>
 </div>

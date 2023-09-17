@@ -3,7 +3,7 @@
   import { Day, type Time } from '../../model';
 
   export let occurence: EditableOccurence;
-  export let index: number;
+  export let id: string;
   export let deletionCallback: () => void;
 </script>
 
@@ -13,10 +13,10 @@
   </div>
 
   <div class="form-control">
-    <label for={`event-occurence-${index}-day`} class="label">
+    <label for={`${id}-day`} class="label">
       <span class="label-text">Day</span>
     </label>
-    <select name="Day" id={`event-occurence-${index}-day`} class="select select-bordered" bind:value={occurence.day}>
+    <select name="Day" id={`${id}-day`} class="select select-bordered" bind:value={occurence.day}>
       <option value={Day.Mo}>Monday</option>
       <option value={Day.Tu}>Tuesday</option>
       <option value={Day.We}>Wednesday</option>
@@ -29,22 +29,17 @@
 
   <div class="grid gap-4 grid-cols-1 md:grid-cols-2">
     <div class="form-control">
-      <label for={`event-occurence-${index}-from`} class="label">
+      <label for={`${id}-from`} class="label">
         <span class="label-text">From</span>
       </label>
-      <input
-        id={`event-occurence-${index}-from`}
-        type="time"
-        class="input input-bordered"
-        bind:value={occurence.from}
-      />
+      <input id={`${id}-from`} type="time" class="input input-bordered" bind:value={occurence.from} />
     </div>
 
     <div class="form-control">
-      <label for={`event-occurence-${index}-to`} class="label">
+      <label for={`${id}-to`} class="label">
         <span class="label-text">To</span>
       </label>
-      <input id={`event-occurence-${index}-to`} type="time" class="input input-bordered" bind:value={occurence.to} />
+      <input id={`${id}-to`} type="time" class="input input-bordered" bind:value={occurence.to} />
     </div>
   </div>
 </div>
