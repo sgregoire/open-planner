@@ -49,6 +49,23 @@
 
 <TimeframeFrom id="root-timeframe" bind:timeframe={root.timeframe} />
 <fieldset>
+  <legend>Exceptions</legend>
+  <button class="btn btn-neutral btn-sm" on:click={addException}>
+    <TimerCancel /> Add
+  </button>
+  {#each root.exceptions as exception, i}
+    <div class="flex flex-col px-2">
+      <div class="self-end">
+        <button class="btn btn-danger btn-sm" on:click={() => deleteException(i)}>
+          <CalendarMinus /> Remove
+        </button>
+      </div>
+      <TimeframeFrom id={`root-exception-${i}`} bind:timeframe={exception} />
+    </div>
+  {/each}
+</fieldset>
+
+<fieldset>
   <legend>Events</legend>
   <button class="btn btn-neutral btn-sm" on:click={addEvent}>
     <CalendarPlus /> Add
@@ -61,22 +78,6 @@
         </button>
       </div>
       <EventForm id={`root-event-${i}`} bind:event />
-    </div>
-  {/each}
-</fieldset>
-<fieldset>
-  <legend>Exceptions</legend>
-  <button class="btn btn-neutral btn-sm" on:click={addException}>
-    <TimerCancel /> Add
-  </button>
-  {#each root.exceptions as exception, i}
-    <div class="flex flex-col px-2">
-      <div class="self-end">
-        <button class="btn btn-danger btn-sm" on:click={() => deleteException(i)}>
-          <CalendarMinus />Remove
-        </button>
-      </div>
-      <TimeframeFrom id={`root-exception-${i}`} bind:timeframe={exception} />
     </div>
   {/each}
 </fieldset>
