@@ -1,5 +1,6 @@
 import moment from 'moment';
 import { Day, type EventType, type Hour, type Occurence, type Root } from './root';
+import { momentDateToDay } from './momentUtils';
 
 export const root: Root = {
   timeframe: {
@@ -134,7 +135,7 @@ export function weekEventGenerator(number: number) {
       const start = Math.floor(Math.random() * 12) + 8;
       const duration = Math.floor(Math.random() * 2) + 1;
       occurences.push({
-        day: indexToDay(Math.floor(Math.random() * 7)),
+        day: momentDateToDay(Math.floor(Math.random() * 7)),
         from: {
           hour: start as Hour,
           minute: 0,
@@ -148,7 +149,7 @@ export function weekEventGenerator(number: number) {
     eventTypes.push({
       name: `event-${i}`,
       exceptions: [],
-      tags: new Set(),
+      tags: [],
       timeframe: {
         from: moment('2023-09-01').toDate(),
         to: moment('2024-06-01').toDate(),
