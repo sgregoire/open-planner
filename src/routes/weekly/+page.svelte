@@ -7,7 +7,6 @@
   import TagSelector from '../../components/TagSelector.svelte';
   import EventSelector from '../../components/EventSelector.svelte';
   import { writable, type Writable } from 'svelte/store';
-  import Pencil from 'svelte-material-icons/Pencil.svelte';
   import NothingToShow from '../../components/NothingToShow.svelte';
 
   let container: HTMLDivElement;
