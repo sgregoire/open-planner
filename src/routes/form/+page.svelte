@@ -1,19 +1,8 @@
 <script lang="ts">
   import { writable } from 'svelte/store';
   import { Day, type Time } from '../../model';
-  import type { EditableEvent } from '../../model/form/Editable';
-
-  function dateToString(date: Date) {
-    return [
-      date.getFullYear(),
-      (date.getMonth() + 1).toString().padStart(2, '0'),
-      date.getDate().toString().padStart(2, '0'),
-    ].join('-');
-  }
-
-  function timeToString(time: Time) {
-    return [time.hour, time.minute].join(':');
-  }
+  import type { EditableEvent } from '../../model/form/EditableEvent';
+  import { dateToString } from '../../model/form/mappers';
 
   const event = writable({
     name: '',
