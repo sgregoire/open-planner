@@ -1,16 +1,33 @@
 <script lang="ts">
-  import { Day, type Hour, type Time } from '../model';
-  import { weekEventGenerator } from '../model/my-events';
-  import { generateColors } from '../lib/color-generator';
+  import { Day, type EventType, type Hour, type Time } from '../../model';
+  import { weekEventGenerator } from '../../model/my-events';
+  import { generateColors } from '$lib/color-generator';
   import { onMount } from 'svelte';
   import { colorToRgb } from '$lib/colorHelper';
   import { isOverlapping } from '$lib/timeUtil';
+  import TagSelector from '../../components/TagSelector.svelte';
+  import EventSelector from '../../components/EventSelector.svelte';
+  import { get, writable } from 'svelte/store';
 
   let container: HTMLDivElement;
 
   const days = ['Lu', 'Ma', 'Me', 'Je', 'Ve', 'Sa', 'Di'];
 
   const root = weekEventGenerator(50);
+
+  const displayableEventsStore = writable(root.eventTypes.map((it) => it.name));
+
+  function selectedEventsCallback(eventTypes: EventType[]) {
+    const newDisplayable = eventTypes.map((it) => it.name);
+    console.log(
+      'Got new selections, excluding',
+      root.eventTypes.filter((it) => !newDisplayable.includes(it.name)).map((it) => it.name),
+      newDisplayable.length,
+    );
+    displayableEventsStore.set(newDisplayable);
+    paint();
+  }
+
   const colors = generateColors(root.eventTypes.filter((it) => it.color === undefined).length);
   let cnt = 0;
   for (const event of root.eventTypes) {
@@ -130,51 +147,54 @@
       elt.style.setProperty('left', `${hourWidth + idx * dayWidth}px`);
     });
 
-    root.eventTypes.forEach((eventType) => {
-      eventType.occurences.forEach((occurence) => {
-        const overlappingOccurences = root.eventTypes
-          .flatMap((it) => it.occurences)
-          .filter((it) => isOverlapping(occurence, it));
+    const displayableEvents = get(displayableEventsStore);
+    root.eventTypes
+      .filter((eventType) => displayableEvents.includes(eventType.name))
+      .forEach((eventType) => {
+        eventType.occurences.forEach((occurence) => {
+          const overlappingOccurences = root.eventTypes
+            .flatMap((it) => it.occurences)
+            .filter((it) => isOverlapping(occurence, it));
 
-        const others = overlappingOccurences.filter((it) => it !== occurence);
+          const others = overlappingOccurences.filter((it) => it !== occurence);
 
-        const otherEventsInParallelCnt = Math.max(
-          // At least other.length as value
-          ...[
-            others.length,
-            ...others.map((other, idx) =>
-              // Count events in parallel
-              others.slice(idx + 1).reduce((acc, it) => acc + (isOverlapping(other, it) ? 2 : 0), 0),
-            ),
-          ],
-        );
+          const otherEventsInParallelCnt = Math.max(
+            // At least other.length as value
+            ...[
+              others.length,
+              ...others.map((other, idx) =>
+                // Count events in parallel
+                others.slice(idx + 1).reduce((acc, it) => acc + (isOverlapping(other, it) ? 2 : 0), 0),
+              ),
+            ],
+          );
 
-        const child = document.createElement('div');
-        const fromHourText = `${occurence.from.hour.toString().padStart(2, '0')}`;
-        const toHourText = `${occurence.to.hour.toString().padStart(2, '0')}`;
-        const fromMinText = `${occurence.from.minute.toString().padStart(2, '0')}`;
-        const toMinText = `${occurence.to.minute.toString().padStart(2, '0')}`;
-        const fromText = `${fromHourText}:${fromMinText}`;
-        const toText = `${toHourText}:${toMinText}`;
-        child.textContent = `${eventType.name} - ${occurence.day} ${fromText} - ${toText}`;
-        child.classList.add('absolute', 'text-center', 'px-1', 'bg-clip-content');
+          const child = document.createElement('div');
+          const fromHourText = `${occurence.from.hour.toString().padStart(2, '0')}`;
+          const toHourText = `${occurence.to.hour.toString().padStart(2, '0')}`;
+          const fromMinText = `${occurence.from.minute.toString().padStart(2, '0')}`;
+          const toMinText = `${occurence.to.minute.toString().padStart(2, '0')}`;
+          const fromText = `${fromHourText}:${fromMinText}`;
+          const toText = `${toHourText}:${toMinText}`;
+          child.textContent = `${eventType.name} - ${occurence.day} ${fromText} - ${toText}`;
+          child.classList.add('absolute', 'text-center', 'px-1', 'bg-clip-content');
 
-        // 1 for current event
-        const occurenceWidth = dayWidth / (otherEventsInParallelCnt + 1);
-        child.style.setProperty('width', `${occurenceWidth}px`);
+          // 1 for current event
+          const occurenceWidth = dayWidth / (otherEventsInParallelCnt + 1);
+          child.style.setProperty('width', `${occurenceWidth}px`);
 
-        const duration = computeDuration(occurence.from, occurence.to);
-        child.style.setProperty('height', `${minuteHeight * duration}px`);
-        const durationFromBeginning = computeDuration({ hour: fromHour, minute: 0 }, occurence.from);
-        child.style.setProperty('top', `${dayHeight + durationFromBeginning * minuteHeight}px`);
+          const duration = computeDuration(occurence.from, occurence.to);
+          child.style.setProperty('height', `${minuteHeight * duration}px`);
+          const durationFromBeginning = computeDuration({ hour: fromHour, minute: 0 }, occurence.from);
+          child.style.setProperty('top', `${dayHeight + durationFromBeginning * minuteHeight}px`);
 
-        const offset = occurenceWidth * overlappingOccurences.findIndex((it) => it === occurence);
-        child.style.setProperty('left', `${hourWidth + dayOffset(occurence.day) * dayWidth + offset}px`);
-        child.style.setProperty('background-color', colorToRgb(eventType.color));
+          const offset = occurenceWidth * overlappingOccurences.findIndex((it) => it === occurence);
+          child.style.setProperty('left', `${hourWidth + dayOffset(occurence.day) * dayWidth + offset}px`);
+          child.style.setProperty('background-color', colorToRgb(eventType.color));
 
-        container.appendChild(child);
+          container.appendChild(child);
+        });
       });
-    });
   }
 
   onMount(() => {
@@ -187,6 +207,8 @@
   });
 </script>
 
+<TagSelector eventTypes={root.eventTypes} />
+<EventSelector eventTypes={root.eventTypes} selected={get(displayableEventsStore)} {selectedEventsCallback} />
 <div class="w-screen h-screen relative">
   <div bind:this={container} class="absolute top-0 bottom-0 left-0 right-0 bg-slate-400" />
 </div>

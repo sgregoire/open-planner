@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Day, type EventType } from '../model';
+  import { Day, type EventType } from '../../model';
 
   const eventInfo: EventType = {
     name: '',

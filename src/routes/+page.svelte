@@ -1,10 +1,7 @@
 <script lang="ts">
   import { root } from '../model/my-events';
   import { generateColors } from '../lib/color-generator';
-  import Yearly from '../components/Yearly.svelte';
-  import Weekly from '../components/Weekly.svelte';
   import { colorToRgb } from '$lib/colorHelper';
-  import Form from '../components/Form.svelte';
 
   const colors = generateColors(root.eventTypes.filter((it) => it.color === undefined).length);
   let cnt = 0;
@@ -14,23 +11,6 @@
       cnt++;
     }
   }
-
-  const eventColorRecord = root.eventTypes.map((it) => ({ name: it.name, color: it.color }));
-  const tags = new Set(root.eventTypes.flatMap((it) => Array.from(it.tags)));
 </script>
 
-<select name="tags" id="tags" multiple>
-  {#each tags as tag}
-    <option value={tag}>{tag}</option>
-  {/each}
-</select>
-
-<div class="flex">
-  {#each eventColorRecord as event}
-    <div class="p-1" style="background-color: {colorToRgb(event.color)};">{event.name}</div>
-  {/each}
-</div>
-
-<!-- <Yearly /> -->
-<!-- <Weekly /> -->
-<Form />
+<h1>Hello, world!</h1>

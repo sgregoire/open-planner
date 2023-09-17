@@ -1,9 +1,9 @@
 <script lang="ts">
   import moment from 'moment';
-  import { root } from '../model/my-events';
+  import { root } from '../../model/my-events';
   import { matchingEvents } from '$lib/eventMatcher';
   import { colorToRgb } from '$lib/colorHelper';
-  import { momentDateToDay } from '../model/momentUtils';
+  import { momentDateToDay } from '../../model/momentUtils';
 
   const monthNames = [
     'Janvier',
