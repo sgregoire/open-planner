@@ -6,6 +6,7 @@
   import { momentDateToDay } from '../../model/momentUtils';
   import type { Root } from '../../model';
   import type { Writable } from 'svelte/store';
+  import NothingToShow from '../../components/NothingToShow.svelte';
 
   const rootContext = getContext<Writable<Root | undefined>>('root');
   const monthNames = [
@@ -41,8 +42,8 @@
   }
 </script>
 
-<div class="flex flex-1">
-  {#if $rootContext}
+{#if $rootContext}
+  <div class="flex flex-1">
     {#each months as month}
       <div class="flex flex-col flex-1">
         <div class="text-3xl font-bold text-center">
@@ -67,7 +68,7 @@
         {/each}
       </div>
     {/each}
-  {:else}
-    Nothing to show.
-  {/if}
-</div>
+  </div>
+{:else}
+  <NothingToShow />
+{/if}

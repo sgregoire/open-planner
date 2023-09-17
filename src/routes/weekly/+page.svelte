@@ -7,6 +7,8 @@
   import TagSelector from '../../components/TagSelector.svelte';
   import EventSelector from '../../components/EventSelector.svelte';
   import { writable, type Writable } from 'svelte/store';
+  import Pencil from 'svelte-material-icons/Pencil.svelte';
+  import NothingToShow from '../../components/NothingToShow.svelte';
 
   let container: HTMLDivElement;
 
@@ -239,5 +241,5 @@
     <div bind:this={container} class="absolute top-0 bottom-0 left-0 right-0 bg-slate-400" />
   </div>
 {:else}
-  Nothing to show
+  <NothingToShow />
 {/if}

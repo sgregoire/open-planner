@@ -19,6 +19,6 @@
   }
 </script>
 
-<button class="btn btn-ghost" on:click={download} disabled={!hasContext('root')}>
+<button on:click={download} disabled={!hasContext('root')}>
   <Download />Export
 </button>

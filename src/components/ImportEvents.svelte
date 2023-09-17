@@ -54,7 +54,7 @@
 
 <input bind:this={fileInput} type="file" accept=".json" class="hidden" on:input={onFileInput} />
 
-<button class="btn btn-ghost" on:click={selectFile}>
+<button on:click={selectFile}>
   {#if $loading}
     <span class="loading loading-spinner" />
   {/if}
