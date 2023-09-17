@@ -15,21 +15,19 @@
   }
 </script>
 
-<form action="">
-  <div class="grid gap-4 grid-cols-6">
-    {#each eventTypes as event, i}
-      <div>
-        <label for={`event-selector-${i}`}>
-          {event.name}
-          <span class="h-4 w-4 inline-block" style="background-color: {colorToRgb(event.color)};" />
-        </label>
-        <input
-          id={`event-selector-${i}`}
-          type="checkbox"
-          on:change={(e) => eventSelected(event, selected.includes(event.name))}
-          checked={selected.includes(event.name)}
-        />
-      </div>
-    {/each}
-  </div>
-</form>
+<div class="grid gap-4 grid-cols-6">
+  {#each eventTypes as event, i}
+    <div>
+      <label for={`event-selector-${i}`}>
+        {event.name}
+        <span class="h-4 w-4 inline-block" style="background-color: {colorToRgb(event.color)};" />
+      </label>
+      <input
+        id={`event-selector-${i}`}
+        type="checkbox"
+        on:change={(e) => eventSelected(event, selected.includes(event.name))}
+        checked={selected.includes(event.name)}
+      />
+    </div>
+  {/each}
+</div>
