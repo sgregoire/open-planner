@@ -12,9 +12,9 @@
   let container: HTMLDivElement;
 
   const days = ['Lu', 'Ma', 'Me', 'Je', 'Ve', 'Sa', 'Di'];
-  const rootStore = getContext<Writable<Root | undefined>>('root');
+  const rootStore = getContext<Writable<Root>>('root');
 
-  let displayableEventsNames = $rootStore?.eventTypes.map((it) => it.name) ?? [];
+  let displayableEventsNames = $rootStore.eventTypes.map((it) => it.name) ?? [];
   const displayableEventsStore = writable(displayableEventsNames);
   displayableEventsStore.subscribe((value) => (displayableEventsNames = value));
 
@@ -23,7 +23,7 @@
     paint($rootStore);
   }
 
-  let displayableEventsTags = Array.from(new Set($rootStore?.eventTypes.flatMap((it) => it.tags)));
+  let displayableEventsTags = Array.from(new Set($rootStore.eventTypes.flatMap((it) => it.tags)));
   const canFilterTags = displayableEventsTags.length > 0;
   const displayableEventsTagsStore = writable(displayableEventsTags);
   displayableEventsTagsStore.subscribe((value) => (displayableEventsTags = value));
@@ -223,22 +223,18 @@
   });
 </script>
 
-{#if $rootStore}
-  {#if canFilterTags}
-    <TagSelector
-      eventTypes={$rootStore.eventTypes}
-      selected={displayableEventsTags}
-      selectionCallback={selectedEventsTagsCallback}
-    />
-  {/if}
-  <EventSelector
+{#if canFilterTags}
+  <TagSelector
     eventTypes={$rootStore.eventTypes}
-    selected={displayableEventsNames}
-    selectionCallback={selectedEventsNameCallback}
+    selected={displayableEventsTags}
+    selectionCallback={selectedEventsTagsCallback}
   />
-  <div class="w-screen h-screen relative">
-    <div bind:this={container} class="absolute top-0 bottom-0 left-0 right-0 bg-slate-400" />
-  </div>
-{:else}
-  <NothingToShow />
 {/if}
+<EventSelector
+  eventTypes={$rootStore.eventTypes}
+  selected={displayableEventsNames}
+  selectionCallback={selectedEventsNameCallback}
+/>
+<div class="w-screen h-screen relative">
+  <div bind:this={container} class="absolute top-0 bottom-0 left-0 right-0 bg-slate-400" />
+</div>

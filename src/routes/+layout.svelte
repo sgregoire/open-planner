@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import '../app.css';
   import ExportEvents from '../components/ExportEvents.svelte';
   import ImportEvents from '../components/ImportEvents.svelte';
@@ -6,6 +6,34 @@
   import CalendarMonth from 'svelte-material-icons/CalendarMonth.svelte';
   import Pencil from 'svelte-material-icons/Pencil.svelte';
   import { base } from '$app/paths';
+  import { onMount, setContext } from 'svelte';
+  import { writable } from 'svelte/store';
+  import type { Root } from '../model';
+  import { rootDecoder } from '$lib/decoders';
+
+  const defaultRoot: Root = {
+    timeframe: {
+      from: new Date(),
+      to: new Date(),
+    },
+    eventTypes: [],
+    exceptions: [],
+  };
+
+  const rootStore = writable(defaultRoot);
+  setContext('root', rootStore);
+
+  onMount(() => {
+    const rootStr = localStorage.getItem('root');
+
+    if (rootStr) {
+      rootStore.set(rootDecoder.value(JSON.parse(rootStr)) ?? defaultRoot);
+    }
+
+    rootStore.subscribe((root) => {
+      localStorage.setItem('root', JSON.stringify(root));
+    });
+  });
 </script>
 
 <div class="navbar bg-base-300 mb-8">

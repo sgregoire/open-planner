@@ -8,7 +8,7 @@
   import type { Writable } from 'svelte/store';
   import NothingToShow from '../../components/NothingToShow.svelte';
 
-  const rootContext = getContext<Writable<Root | undefined>>('root');
+  const rootContext = getContext<Writable<Root>>('root');
   const monthNames = [
     'Janvier',
     'Février',

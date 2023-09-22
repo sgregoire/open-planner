@@ -29,7 +29,6 @@
       const text = await file.text();
       const json = JSON.parse(text);
       const res = rootDecoder.decode(json);
-      console.log(res);
       if (res.ok) {
         if (rootChecker(res.value)) {
           const root: Root = res.value;

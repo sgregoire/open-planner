@@ -1,27 +1,26 @@
 <script lang="ts">
-  import { writable } from 'svelte/store';
-  import { dateToString, editableRootToRoot } from '../../model/form/mappers';
+  import { writable, type Writable } from 'svelte/store';
+  import { dateToString, editableRootToRoot, rootToEdiable } from '../../model/form/mappers';
   import RootForm from '../../components/form/RootForm.svelte';
   import type { EditableRoot } from '../../model/form/EditableRoot';
-  import { setContext } from 'svelte';
+  import { getContext } from 'svelte';
+  import type { Root } from '../../model';
   import ContentSave from 'svelte-material-icons/ContentSave.svelte';
 
-  const root = writable<EditableRoot>({
-    timeframe: {
-      from: dateToString(new Date()),
-      to: dateToString(new Date()),
-    },
-    exceptions: [],
-    eventTypes: [],
+  const rootContextStore: Writable<Root> = getContext('root');
+
+  const writableEditableRootStore = writable<EditableRoot>(rootToEdiable($rootContextStore));
+  rootContextStore.subscribe((root) => {
+    writableEditableRootStore.set(rootToEdiable(root));
   });
 
   function submit() {
-    setContext('root', editableRootToRoot($root));
+    rootContextStore.set(editableRootToRoot($writableEditableRootStore));
   }
 </script>
 
 <form on:submit|preventDefault={submit}>
-  <RootForm bind:root={$root} />
+  <RootForm bind:root={$writableEditableRootStore} />
 
   <button class="btn btn-success mt-2" on:click={submit}>
     <ContentSave /> Save

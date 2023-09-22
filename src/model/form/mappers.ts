@@ -64,3 +64,37 @@ export function editableRootToRoot(root: EditableRoot): Root {
     eventTypes: root.eventTypes.map(editableToEvent),
   };
 }
+
+export function timeframeToEditable(timeframe: Timeframe): EditableTimeframe {
+  return {
+    from: dateToString(timeframe.from),
+    to: dateToString(timeframe.to),
+  };
+}
+
+export function occurenceToEditable(occurence: Occurence): EditableOccurence {
+  return {
+    day: occurence.day,
+    from: timeToString(occurence.from),
+    to: timeToString(occurence.to),
+  };
+}
+
+export function eventToEditable(event: EventType): EditableEvent {
+  return {
+    name: event.name,
+    color: `#ffffff`, // TODO @sgregoire
+    timeframe: timeframeToEditable(event.timeframe),
+    exceptions: event.exceptions.map(timeframeToEditable),
+    occurences: event.occurences.map(occurenceToEditable),
+    tags: event.tags,
+  };
+}
+
+export function rootToEdiable(root: Root): EditableRoot {
+  return {
+    timeframe: timeframeToEditable(root.timeframe),
+    eventTypes: root.eventTypes.map(eventToEditable),
+    exceptions: root.exceptions.map(timeframeToEditable),
+  };
+}
