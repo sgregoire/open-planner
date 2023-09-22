@@ -15,7 +15,7 @@
   <div class="flex-none">
     <ul class="menu menu-horizontal px-1">
       <li><a href={`${base}/form`}><Pencil />Edit</a></li>
-      <li><a href={`${base}/weekly`}><CalendarWeekend />weekly</a></li>
+      <li><a href={`${base}/weekly`}><CalendarWeekend />Weekly</a></li>
       <li><a href={`${base}/yearly`}><CalendarMonth />Yearly</a></li>
       <li><ImportEvents /></li>
       <li><ExportEvents /></li>
