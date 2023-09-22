@@ -17,8 +17,8 @@
         name: '',
         color: '#ffffff',
         timeframe: {
-          from: date,
-          to: date,
+          from: root.timeframe.from,
+          to: root.timeframe.to,
         },
         exceptions: [],
         occurences: [],
