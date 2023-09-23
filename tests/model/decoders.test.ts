@@ -14,7 +14,7 @@ describe('Decoders test', () => {
   describe('Timeframe decoder', () => {
     test('missing attributes should fail', () => {
       const element = {
-        from: moment('2023-09-01').toDate(),
+        from: moment('2023-09-01').toISOString(),
       };
 
       expect(() => timeframeDecoder.verify(element)).toThrow();
@@ -31,8 +31,8 @@ describe('Decoders test', () => {
 
     test('good types should give real object', () => {
       const element = {
-        from: moment('2023-09-01').toDate(),
-        to: moment('2023-09-03').toDate(),
+        from: moment('2023-09-01').toISOString(),
+        to: moment('2023-09-03').toISOString(),
       };
 
       const timeframe = timeframeDecoder.verify(element);
@@ -190,13 +190,13 @@ describe('Decoders test', () => {
           blue: 123,
         },
         timeframe: {
-          from: moment('2023-09-01').toDate(),
-          to: moment('2023-09-03').toDate(),
+          from: moment('2023-09-01').toISOString(),
+          to: moment('2023-09-03').toISOString(),
         },
         exceptions: [
           {
-            from: moment('2023-09-01').toDate(),
-            to: moment('2023-09-03').toDate(),
+            from: moment('2023-09-01').toISOString(),
+            to: moment('2023-09-03').toISOString(),
           },
         ],
         occurences: [
@@ -233,8 +233,8 @@ describe('Decoders test', () => {
         name: 'my-event',
         tags: [],
         timeframe: {
-          from: moment('2023-09-01').toDate(),
-          to: moment('2023-09-03').toDate(),
+          from: moment('2023-09-01').toISOString(),
+          to: moment('2023-09-03').toISOString(),
         },
         exceptions: [],
         occurences: [],
@@ -276,13 +276,13 @@ describe('Decoders test', () => {
     test('good types should give real object', () => {
       const element = {
         timeframe: {
-          from: moment('2023-09-01').toDate(),
-          to: moment('2023-09-03').toDate(),
+          from: moment('2023-09-01').toISOString(),
+          to: moment('2023-09-03').toISOString(),
         },
         exceptions: [
           {
-            from: moment('2023-09-01').toDate(),
-            to: moment('2023-09-03').toDate(),
+            from: moment('2023-09-01').toISOString(),
+            to: moment('2023-09-03').toISOString(),
           },
         ],
         eventTypes: [
@@ -290,8 +290,8 @@ describe('Decoders test', () => {
             name: 'my-event',
             tags: [],
             timeframe: {
-              from: moment('2023-09-01').toDate(),
-              to: moment('2023-09-03').toDate(),
+              from: moment('2023-09-01').toISOString(),
+              to: moment('2023-09-03').toISOString(),
             },
             exceptions: [],
             occurences: [],
@@ -309,8 +309,8 @@ describe('Decoders test', () => {
     test('good types should give real object with minimal definition', () => {
       const element = {
         timeframe: {
-          from: moment('2023-09-01').toDate(),
-          to: moment('2023-09-03').toDate(),
+          from: moment('2023-09-01').toISOString(),
+          to: moment('2023-09-03').toISOString(),
         },
         exceptions: [],
         eventTypes: [],
