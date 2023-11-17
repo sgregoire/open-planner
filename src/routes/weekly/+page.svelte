@@ -7,7 +7,6 @@
   import TagSelector from '../../components/TagSelector.svelte';
   import EventSelector from '../../components/EventSelector.svelte';
   import { writable, type Writable } from 'svelte/store';
-  import NothingToShow from '../../components/NothingToShow.svelte';
 
   let container: HTMLDivElement;
 
@@ -76,7 +75,7 @@
         dayLabel.style.setProperty('top', '0');
 
         const dayLine = document.createElement('div');
-        dayLine.classList.add('absolute', 'w-px', 'bg-slate-500', 'bla');
+        dayLine.classList.add('absolute', 'w-px', 'bg-slate-500');
         dayLine.style.setProperty('top', '0');
         dayLine.style.setProperty('bottom', '0');
 
@@ -218,7 +217,8 @@
   }
 
   onMount(() => {
-    repaint();
+    rootStore.subscribe(repaint);
+
     window.addEventListener('resize', repaint);
 
     return () => {
