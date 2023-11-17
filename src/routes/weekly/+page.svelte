@@ -239,6 +239,6 @@
   selected={displayableEventsNames}
   selectionCallback={selectedEventsNameCallback}
 />
-<div class="w-screen h-screen relative">
+<div id="viewport" class="w-full h-96	relative">
   <div bind:this={container} class="absolute top-0 bottom-0 left-0 right-0 bg-slate-400" />
 </div>
