@@ -218,7 +218,6 @@
   }
 
   onMount(() => {
-    console.log("Mounted")
     repaint();
     window.addEventListener('resize', repaint);
 
