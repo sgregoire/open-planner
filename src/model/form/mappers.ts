@@ -1,5 +1,5 @@
 import moment from 'moment';
-import type { Timeframe, Time, Occurence, EventType, Root } from '../root';
+import type { Timeframe, Time, Occurence, EventType, Root, Color } from '../root';
 import type { EditableEvent, EditableOccurence, EditableTimeframe } from './EditableEvent';
 import type { EditableRoot } from './EditableRoot';
 
@@ -42,13 +42,17 @@ function editableOccurenceToOccurence(occurence: EditableOccurence): Occurence {
   };
 }
 
+function hexToDecimal(value: string) {
+  return parseInt(value, 16);
+}
+
 export function editableToEvent(event: EditableEvent): EventType {
   return {
     name: event.name,
     color: {
-      red: 0,
-      green: 0,
-      blue: 0,
+      red: hexToDecimal(event.color.slice(1, 3)),
+      green: hexToDecimal(event.color.slice(3, 5)),
+      blue: hexToDecimal(event.color.slice(5, 7)),
     },
     exceptions: event.exceptions.map(editableTimeframeToTimeframe),
     occurences: event.occurences.map(editableOccurenceToOccurence),
@@ -80,10 +84,17 @@ export function occurenceToEditable(occurence: Occurence): EditableOccurence {
   };
 }
 
+function decimalToHex(color: Color | undefined) {
+  if (color) {
+    return `#${color.red.toString(16)}${color.green.toString(16)}${color.blue.toString(16)}`;
+  }
+  return '#FFFFFF';
+}
 export function eventToEditable(event: EventType): EditableEvent {
   return {
     name: event.name,
-    color: `#ffffff`, // TODO @sgregoire
+
+    color: decimalToHex(event.color),
     timeframe: timeframeToEditable(event.timeframe),
     exceptions: event.exceptions.map(timeframeToEditable),
     occurences: event.occurences.map(occurenceToEditable),
