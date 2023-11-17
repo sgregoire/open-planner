@@ -20,7 +20,7 @@
 
   function selectedEventsNameCallback(names: string[]) {
     displayableEventsStore.set(names);
-    paint($rootStore);
+    repaint();
   }
 
   let displayableEventsTags = Array.from(new Set($rootStore.eventTypes.flatMap((it) => it.tags)));
@@ -30,7 +30,7 @@
 
   function selectedEventsTagsCallback(tags: string[]) {
     displayableEventsTagsStore.set(tags);
-    paint($rootStore);
+    repaint();
   }
 
   function dayOffset(day: Day) {
@@ -57,9 +57,6 @@
   }
 
   function paint(root: Root | undefined) {
-    // TODO @sgregoire: Fix repaint
-    container.childNodes.forEach((it) => it.remove());
-
     if (root) {
       const occurences = root.eventTypes.flatMap((eventType) => eventType.occurences);
       const froms: number[] = occurences.map((it) => it.from.hour);
@@ -213,12 +210,20 @@
     }
   }
 
+  function repaint() {
+    while(container.children.length > 0) {
+      container.children.item(0)?.remove()
+    }
+    paint($rootStore)
+  }
+
   onMount(() => {
-    paint($rootStore);
-    window.addEventListener('resize', () => paint($rootStore));
+    console.log("Mounted")
+    repaint();
+    window.addEventListener('resize', repaint);
 
     return () => {
-      window.removeEventListener('resize', () => paint($rootStore));
+      window.removeEventListener('resize', repaint);
     };
   });
 </script>
