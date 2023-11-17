@@ -93,7 +93,7 @@
     <div class="flex flex-col px-2">
       <div class="self-end">
         <button class="btn btn-danger btn-sm" on:click={() => deleteException(i)}>
-          <TagRemove /> Remove
+          <ClockMinus /> Remove
         </button>
       </div>
       <TimeframeFrom id={`${id}-exception-${i}`} bind:timeframe={exception} />
