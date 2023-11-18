@@ -6,8 +6,8 @@
   import CalendarMonth from 'svelte-material-icons/CalendarMonth.svelte';
   import Pencil from 'svelte-material-icons/Pencil.svelte';
   import { base } from '$app/paths';
-  import { onMount, setContext } from 'svelte';
-  import { writable } from 'svelte/store';
+  import { onDestroy, onMount, setContext } from 'svelte';
+  import { writable, type Unsubscriber } from 'svelte/store';
   import type { Root } from '../model';
   import { rootDecoder } from '$lib/decoders';
 
@@ -23,6 +23,7 @@
   const rootStore = writable(defaultRoot);
   setContext('root', rootStore);
 
+  let unsubscribe: Unsubscriber | undefined = undefined;
   onMount(() => {
     const rootStr = localStorage.getItem('root');
 
@@ -30,9 +31,15 @@
       rootStore.set(rootDecoder.value(JSON.parse(rootStr)) ?? defaultRoot);
     }
 
-    rootStore.subscribe((root) => {
+    unsubscribe = rootStore.subscribe((root) => {
       localStorage.setItem('root', JSON.stringify(root));
     });
+  });
+
+  onDestroy(() => {
+    if (unsubscribe) {
+      unsubscribe();
+    }
   });
 </script>
 

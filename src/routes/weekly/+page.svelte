@@ -1,12 +1,12 @@
 <script lang="ts">
   import { Day, type Hour, type Root, type Time } from '../../model';
-  import { getContext } from 'svelte';
+  import { getContext, onDestroy } from 'svelte';
   import { onMount } from 'svelte';
   import { colorToRgb } from '$lib/colorHelper';
   import { isOverlapping } from '$lib/timeUtil';
   import TagSelector from '../../components/TagSelector.svelte';
   import EventSelector from '../../components/EventSelector.svelte';
-  import { writable, type Writable } from 'svelte/store';
+  import { writable, type Unsubscriber, type Writable } from 'svelte/store';
 
   let container: HTMLDivElement;
 
@@ -210,20 +210,28 @@
   }
 
   function repaint() {
-    while (container.children.length > 0) {
+    while (container?.children.length > 0) {
       container.children.item(0)?.remove();
     }
     paint($rootStore);
   }
 
+  let unsubscribe: Unsubscriber | undefined = undefined;
+
   onMount(() => {
-    rootStore.subscribe(repaint);
+    unsubscribe = rootStore.subscribe(repaint);
 
     window.addEventListener('resize', repaint);
 
     return () => {
       window.removeEventListener('resize', repaint);
     };
+  });
+
+  onDestroy(() => {
+    if (unsubscribe) {
+      unsubscribe();
+    }
   });
 </script>
 
