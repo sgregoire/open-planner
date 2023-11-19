@@ -1,9 +1,21 @@
 <script lang="ts">
   import type { EditableOccurence } from '../../model/form/EditableEvent';
   import { Day } from '../../model';
+  import TagPlus from 'svelte-material-icons/TagPlus.svelte';
+  import TagRemove from 'svelte-material-icons/TagRemove.svelte';
+  import TagFrom from './TagFrom.svelte';
 
   export let occurence: EditableOccurence;
   export let id: string;
+
+  function addTag() {
+    occurence.tags = [...occurence.tags, ''];
+    console.log(occurence.tags);
+  }
+
+  function deleteTag(index: number) {
+    occurence.tags = occurence.tags.toSpliced(index, 1);
+  }
 </script>
 
 <div class="form-control">
@@ -35,4 +47,23 @@
     </label>
     <input id={`${id}-to`} type="time" class="input input-bordered" bind:value={occurence.to} />
   </div>
+
+  <fieldset>
+    <legend>Tags</legend>
+    <button class="btn btn-neutral btn-sm" on:click={addTag}>
+      <TagPlus /> Add
+    </button>
+    <div class="grid gap-4 grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+      {#each occurence.tags as tag, i}
+        <div class="flex flex-col px-2">
+          <div class="self-end">
+            <button class="btn btn-danger btn-sm" on:click={() => deleteTag(i)}>
+              <TagRemove /> Remove
+            </button>
+          </div>
+          <TagFrom id={`${id}-tags-${i}`} bind:tag />
+        </div>
+      {/each}
+    </div>
+  </fieldset>
 </div>

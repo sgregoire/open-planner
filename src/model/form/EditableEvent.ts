@@ -9,6 +9,7 @@ export type EditableOccurence = {
   day: Day;
   from: string;
   to: string;
+  tags: string[];
 };
 
 export type EditableEvent = {

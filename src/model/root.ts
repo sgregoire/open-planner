@@ -129,4 +129,5 @@ export type Occurence = {
   day: Day;
   from: Time;
   to: Time;
+  tags: string[];
 };

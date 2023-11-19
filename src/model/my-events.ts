@@ -32,6 +32,7 @@ export const root: Root = {
             hour: 12,
             minute: 30,
           },
+          tags: [],
         },
         {
           day: Day.Th,
@@ -43,6 +44,7 @@ export const root: Root = {
             hour: 13,
             minute: 0,
           },
+          tags: [],
         },
         {
           day: Day.Fr,
@@ -54,6 +56,7 @@ export const root: Root = {
             hour: 12,
             minute: 30,
           },
+          tags: [],
         },
       ],
     },
@@ -81,6 +84,7 @@ export const root: Root = {
             hour: 11,
             minute: 30,
           },
+          tags: [],
         },
         {
           day: Day.Mo,
@@ -92,6 +96,7 @@ export const root: Root = {
             hour: 12,
             minute: 30,
           },
+          tags: [],
         },
         {
           day: Day.Tu,
@@ -103,6 +108,7 @@ export const root: Root = {
             hour: 12,
             minute: 30,
           },
+          tags: [],
         },
         {
           day: Day.We,
@@ -114,6 +120,7 @@ export const root: Root = {
             hour: 12,
             minute: 30,
           },
+          tags: [],
         },
       ],
     },
@@ -144,6 +151,7 @@ export function weekEventGenerator(number: number) {
           hour: (start + duration) as Hour,
           minute: 0,
         },
+        tags: [],
       });
     }
     eventTypes.push({

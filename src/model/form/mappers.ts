@@ -39,6 +39,7 @@ function editableOccurenceToOccurence(occurence: EditableOccurence): Occurence {
     day: occurence.day,
     from: stringToTime(occurence.from),
     to: stringToTime(occurence.to),
+    tags: occurence.tags,
   };
 }
 
@@ -81,6 +82,7 @@ export function occurenceToEditable(occurence: Occurence): EditableOccurence {
     day: occurence.day,
     from: timeToString(occurence.from),
     to: timeToString(occurence.to),
+    tags: occurence.tags,
   };
 }
 

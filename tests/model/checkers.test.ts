@@ -135,6 +135,7 @@ describe('Checkers test', () => {
           minute: 30,
         },
         to: validTime,
+        tags: [],
       };
 
       expect(occurenceChecker(occurence)).toBeFalsy();
@@ -148,6 +149,7 @@ describe('Checkers test', () => {
           minute: 30,
         },
         from: validTime,
+        tags: [],
       };
 
       expect(occurenceChecker(occurence)).toBeFalsy();
@@ -161,6 +163,7 @@ describe('Checkers test', () => {
           hour: (validTime.hour + 1) as Hour,
         },
         to: validTime,
+        tags: [],
       };
 
       expect(occurenceChecker(occurence)).toBeFalsy();
@@ -174,6 +177,7 @@ describe('Checkers test', () => {
           ...validTime,
           hour: (validTime.hour + 1) as Hour,
         },
+        tags: [],
       };
 
       expect(occurenceChecker(occurence)).toBeTruthy();

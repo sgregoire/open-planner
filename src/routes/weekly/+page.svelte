@@ -22,7 +22,13 @@
     repaint();
   }
 
-  let displayableEventsTags = Array.from(new Set($rootStore.eventTypes.flatMap((it) => it.tags)));
+  let displayableEventsTags = Array.from(
+    new Set(
+      $rootStore.eventTypes.flatMap((it) =>
+        [...it.tags, ...it.occurences.flatMap((occ) => occ.tags)].filter((it) => it != undefined),
+      ),
+    ),
+  );
   const canFilterTags = displayableEventsTags.length > 0;
   const displayableEventsTagsStore = writable(displayableEventsTags);
   displayableEventsTagsStore.subscribe((value) => (displayableEventsTags = value));

@@ -15,6 +15,7 @@ export const occurenceDecoder: Decoder<Occurence> = object({
   day: oneOf([Day.Mo, Day.Tu, Day.We, Day.Th, Day.Fr, Day.Sa, Day.Su]),
   from: timeDecoder,
   to: timeDecoder,
+  tags: array(string),
 });
 
 export const colorDecoder: Decoder<Color> = object({
