@@ -70,9 +70,6 @@
 
 <fieldset>
   <legend>Occurences</legend>
-  <button class="btn btn-neutral btn-sm" on:click={addOccurence}>
-    <ClockPlus /> Add
-  </button>
   {#each event.occurences as occurence, i}
     <div class="flex flex-col px-2">
       <div class="self-end">
@@ -83,13 +80,13 @@
       <OccurenceForm id={`${id}-occurence-${i}`} bind:occurence />
     </div>
   {/each}
+  <button class="btn btn-neutral btn-sm" on:click={addOccurence}>
+    <ClockPlus /> Add
+  </button>
 </fieldset>
 
 <fieldset>
   <legend>Exceptions</legend>
-  <button class="btn btn-neutral btn-sm" on:click={addException}>
-    <TimerCancel /> Add
-  </button>
   {#each event.exceptions as exception, i}
     <div class="flex flex-col px-2">
       <div class="self-end">
@@ -100,23 +97,28 @@
       <TimeframeFrom id={`${id}-exception-${i}`} bind:timeframe={exception} />
     </div>
   {/each}
+  <button class="btn btn-neutral btn-sm" on:click={addException}>
+    <TimerCancel /> Add
+  </button>
 </fieldset>
 
 <fieldset>
   <legend>Tags</legend>
+  {#if event.tags.length > 0}
+    <div class="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
+      {#each event.tags as tag, i}
+        <div class="flex flex-col px-2">
+          <div class="self-end">
+            <button class="btn btn-danger btn-sm" on:click={() => deleteTag(i)}>
+              <TagRemove /> Remove
+            </button>
+          </div>
+          <TagFrom id={`${id}-tags-${i}`} bind:tag />
+        </div>
+      {/each}
+    </div>
+  {/if}
   <button class="btn btn-neutral btn-sm" on:click={addTag}>
     <TagPlus /> Add
   </button>
-  <div class="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
-    {#each event.tags as tag, i}
-      <div class="flex flex-col px-2">
-        <div class="self-end">
-          <button class="btn btn-danger btn-sm" on:click={() => deleteTag(i)}>
-            <TagRemove /> Remove
-          </button>
-        </div>
-        <TagFrom id={`${id}-tags-${i}`} bind:tag />
-      </div>
-    {/each}
-  </div>
 </fieldset>

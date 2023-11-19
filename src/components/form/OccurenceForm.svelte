@@ -50,20 +50,22 @@
 
   <fieldset>
     <legend>Tags</legend>
+    {#if occurence.tags.length > 0}
+      <div class="grid gap-4 grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+        {#each occurence.tags as tag, i}
+          <div class="flex flex-col px-2">
+            <div class="self-end">
+              <button class="btn btn-danger btn-sm" on:click={() => deleteTag(i)}>
+                <TagRemove /> Remove
+              </button>
+            </div>
+            <TagFrom id={`${id}-tags-${i}`} bind:tag />
+          </div>
+        {/each}
+      </div>
+    {/if}
     <button class="btn btn-neutral btn-sm" on:click={addTag}>
       <TagPlus /> Add
     </button>
-    <div class="grid gap-4 grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
-      {#each occurence.tags as tag, i}
-        <div class="flex flex-col px-2">
-          <div class="self-end">
-            <button class="btn btn-danger btn-sm" on:click={() => deleteTag(i)}>
-              <TagRemove /> Remove
-            </button>
-          </div>
-          <TagFrom id={`${id}-tags-${i}`} bind:tag />
-        </div>
-      {/each}
-    </div>
   </fieldset>
 </div>
