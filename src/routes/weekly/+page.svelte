@@ -57,7 +57,12 @@
 
   function paint(root: Root | undefined) {
     if (root) {
-      const occurences = root.eventTypes.flatMap((eventType) => eventType.occurences);
+      const events = root.eventTypes
+        .filter((eventType) => displayableEventsNames.includes(eventType.name))
+        .filter((eventType) =>
+          displayableEventsTags.map((tag) => eventType.tags.includes(tag)).reduce((acc, cur) => acc || cur, false),
+        );
+      const occurences = events.flatMap((eventType) => eventType.occurences);
       const froms: number[] = occurences.map((it) => it.from.hour);
       const tos: number[] = occurences.map((it) => (it.to.minute > 0 ? it.to.hour + 1 : it.to.hour));
       const fromHour = Math.min(...froms) as Hour;
@@ -151,7 +156,7 @@
         elt.style.setProperty('left', `${hourWidth + idx * dayWidth}px`);
       });
 
-      root.eventTypes
+      events
         .filter((eventType) => {
           if (canFilterTags) {
             return eventType.tags
@@ -160,10 +165,9 @@
           }
           return true;
         })
-        .filter((eventType) => displayableEventsNames.includes(eventType.name))
         .forEach((eventType) => {
           eventType.occurences.forEach((occurence) => {
-            const overlappingOccurences = root.eventTypes
+            const overlappingOccurences = events
               .flatMap((it) => it.occurences)
               .filter((it) => isOverlapping(occurence, it));
 
