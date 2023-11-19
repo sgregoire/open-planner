@@ -19,7 +19,7 @@
 
   function selectedEventsNameCallback(names: string[]) {
     displayableEventsStore.set(names);
-    paint($rootStore);
+    repaint();
   }
 
   let displayableEventsTags = Array.from(new Set($rootStore.eventTypes.flatMap((it) => it.tags)));
@@ -29,7 +29,7 @@
 
   function selectedEventsTagsCallback(tags: string[]) {
     displayableEventsTagsStore.set(tags);
-    paint($rootStore);
+    repaint();
   }
 
   function dayOffset(day: Day) {
