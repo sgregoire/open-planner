@@ -12,7 +12,7 @@ export function dateToString(date: Date) {
 }
 
 export function timeToString(time: Time) {
-  return [time.hour, time.minute].join(':');
+  return [time.hour.toString().padStart(2, '0'), time.minute.toString().padStart(2, '0')].join(':');
 }
 
 function stringToDate(value: string): Date {
