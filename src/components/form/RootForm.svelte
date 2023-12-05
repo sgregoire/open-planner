@@ -10,7 +10,6 @@
   export let root: EditableRoot;
 
   function addEvent() {
-    const date = dateToString(new Date());
     root.eventTypes = [
       ...root.eventTypes,
       {

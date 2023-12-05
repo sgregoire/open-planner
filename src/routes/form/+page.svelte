@@ -1,6 +1,6 @@
 <script lang="ts">
   import { writable, type Writable } from 'svelte/store';
-  import { dateToString, editableRootToRoot, rootToEdiable } from '../../model/form/mappers';
+  import { editableRootToRoot, rootToEdiable } from '../../model/form/mappers';
   import RootForm from '../../components/form/RootForm.svelte';
   import type { EditableRoot } from '../../model/form/EditableRoot';
   import { getContext, onMount } from 'svelte';
